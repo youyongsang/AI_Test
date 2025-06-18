@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>세계여행 소개</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', '맑은 고딕', Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+    }
+    header {
+      background: linear-gradient(90deg, #4f8cff 40%, #ffb84f 100%);
+      color: #fff;
+      padding: 3rem 0 2rem 0;
+      text-align: center;
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .section-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .section {
+      max-width: 800px;
+      margin: 80px auto;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 2.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 1s cubic-bezier(.77,0,.18,1), transform 1s cubic-bezier(.77,0,.18,1);
+      cursor: pointer;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section img {
+      width: 220px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .section:hover img {
+      transform: scale(1.05);
+    }
+    .section-content {
+      flex: 1;
+    }
+    .section-title {
+      font-size: 1.7rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #4f8cff;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+    @media (max-width: 700px) {
+      .section {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem 0.5rem;
+      }
+      .section img {
+        width: 90vw;
+        height: 30vw;
+        min-height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    세계여행 소개
+    <div style="font-size:1.1rem; margin-top:1rem; font-weight:normal;">
+      스크롤을 내리며 세계의 여행지를 클릭해보세요!
+    </div>
+  </header>
+  <a class="section-link" href="japan.html">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=600&q=80" alt="도쿄">
+      <div class="section-content">
+        <div class="section-title">일본</div>
+        <div class="section-desc">
+          일본은 전통과 현대가 조화를 이루는 동아시아의 섬나라입니다.<br>
+          사계절의 아름다움, 다양한 음식 문화, 온천, 애니메이션 등으로 전 세계 여행객들에게 사랑받고 있습니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <a class="section-link" href="#">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="파리">
+      <div class="section-content">
+        <div class="section-title">프랑스</div>
+        <div class="section-desc">
+          프랑스는 예술, 패션, 미식의 나라로 유명하며, 파리, 니스, 리옹 등 다양한 도시에서 유럽의 낭만과 문화를 경험할 수 있습니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <a class="section-link" href="#">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="베이징">
+      <div class="section-content">
+        <div class="section-title">중국</div>
+        <div class="section-desc">
+          중국은 오랜 역사와 다양한 문화, 광활한 대륙을 자랑하는 나라입니다.<br>
+          만리장성, 자금성, 상하이 등 볼거리와 먹거리가 풍부합니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <a class="section-link" href="#">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80" alt="로마">
+      <div class="section-content">
+        <div class="section-title">이탈리아</div>
+        <div class="section-desc">
+          이탈리아는 고대 로마의 유산과 르네상스 예술, 맛있는 음식과 아름다운 자연경관으로 유명한 남유럽의 나라입니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <a class="section-link" href="#">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80" alt="뉴욕">
+      <div class="section-content">
+        <div class="section-title">미국</div>
+        <div class="section-desc">
+          미국은 다양한 인종과 문화가 공존하는 대륙 국가로, 뉴욕, LA, 샌프란시스코 등 세계적인 도시와 대자연을 모두 경험할 수 있습니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <a class="section-link" href="#">
+    <div class="section">
+      <img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80" alt="리마">
+      <div class="section-content">
+        <div class="section-title">페루</div>
+        <div class="section-desc">
+          페루는 잉카 문명의 본고장으로, 마추픽추와 같은 고대 유적과 안데스 산맥의 아름다운 자연을 자랑합니다.
+        </div>
+      </div>
+    </div>
+  </a>
+  <script>
+    // 스크롤 시 섹션 페이드인 효과
+    function revealSections() {
+      const sections = document.querySelectorAll('.section');
+      const trigger = window.innerHeight * 0.85;
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if(rect.top < trigger) {
+          section.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealSections);
+    window.addEventListener('DOMContentLoaded', revealSections);
+  </script>
+</body>
+</html>

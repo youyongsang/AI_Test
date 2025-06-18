@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>일본 여행 소개</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', '맑은 고딕', Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+    }
+    .home-link {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .home-link img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: #fff;
+      transition: box-shadow 0.2s;
+    }
+    .home-link img:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 2.5rem 2rem;
+    }
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4f8cff;
+      margin-bottom: 1.5rem;
+    }
+    .desc {
+      font-size: 1.2rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .img-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .img-row img {
+      width: 220px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+  </style>
+</head>
+<body>
+  <!-- 홈 아이콘 (예시: static/images/home.png) -->
+  <a class="home-link" href="scroll_web.html" title="홈으로">
+    <img src="static/images/home.png" alt="홈">
+  </a>
+  <div class="container">
+    <div class="title">일본 도쿄 여행</div>
+    <div class="desc">
+      일본의 수도 도쿄는 전통과 현대가 조화를 이루는 도시입니다.<br>
+      도쿄타워, 아사쿠사, 시부야, 하라주쿠 등 다양한 명소와 맛있는 음식, 쇼핑, 애니메이션 문화를 즐길 수 있습니다.<br>
+      벚꽃이 피는 봄, 불꽃놀이가 펼쳐지는 여름, 단풍이 아름다운 가을, 온천이 매력적인 겨울까지 사계절 내내 다양한 매력을 느낄 수 있습니다.
+    </div>
+    <div class="img-row">
+      <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=600&q=80" alt="도쿄타워">
+      <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="아사쿠사">
+      <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80" alt="시부야">
+    </div>
+  </div>
+</body>
+</html>
