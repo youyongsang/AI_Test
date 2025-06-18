@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>중앙 폼 예제</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f0f0f0;
+      overflow: hidden;
+    }
+    .form-slider {
+      width: 90vw;
+      height: 85vh;
+      max-width: 900px;
+      max-height: 700px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      background: #fff;
+      transition: transform 0.6s cubic-bezier(.77,0,.18,1);
+      will-change: transform;
+    }
+    .center-form {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end; /* 하단 정렬로 변경 */
+      padding: 3rem 1.5rem;
+      z-index: 1;
+      transition: transform 0.6s cubic-bezier(.77,0,.18,1);
+      background: #fff;
+    }
+    .center-form#form1 {
+      transform: translateX(0%);
+    }
+    .center-form#form2 {
+      transform: translateX(100%);
+    }
+    .center-form.active {
+      z-index: 2;
+    }
+    .form-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 3rem;
+      text-align: center;
+      width: 100%;
+      margin-top: 0;
+      padding-right: 2rem;   /* 왼쪽 여백 추가 */
+      box-sizing: border-box;
+    }
+    .button-row {
+      display: flex;
+      gap: 3rem;
+      width: 100%;
+      flex: 1;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 5rem; /* 하단 여백 추가 */
+      margin-right: 2.5rem; /* 오른쪽 여백 추가 */
+    }
+    .form-btn {
+      flex: 0 0 370px;   /* 고정 너비로 변경 */
+      max-width: 370px;
+      width: 370px;
+      height: 35%;                  /* 버튼 높이 조정 */
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 2rem;
+      background: #0078d4;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: bold;
+      margin: 0 1rem;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: keep-all;
+      white-space: pre-line;
+    }
+    .form-btn:hover {
+      background: #005fa3;
+    }
+    /* 슬라이드 애니메이션 */
+    .slide-left {
+      transform: translateX(-100%);
+    }
+    .slide-in {
+      transform: translateX(0%);
+    }
+    .slide-right {
+      transform: translateX(100%);
+    }
+    .result-btn {
+      width: 100%;
+      max-width: 160px;
+      min-height: 2em;
+      padding: 0.5em 0;
+      font-size: 1.15rem;
+      border: none;
+      border-radius: 1.2rem;
+      background: #0078d4;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: bold;
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result-btn:hover {
+      background: #005fa3;
+    }
+    .form-btn.burst {
+      animation: burst 0.35s cubic-bezier(.77,0,.18,1) forwards;
+    }
+    @keyframes burst {
+      0% { transform: scale(1);}
+      60% { transform: scale(1.25);}
+      100% { transform: scale(0); opacity: 0;}
+    }
+  </style>
+</head>
+<body>
+  <div class="form-slider" id="slider">
+    <div class="center-form active" id="form1" style="transform: translateX(0%);">
+      <div class="form-title">아무도 없는 집에 왔을 때, 당신의 기분은?</div>
+      <img src="images/1.png" alt="질문1 이미지" style="width:480px;">
+      <div class="button-row">
+        <button class="form-btn" onclick="nextForm(1, 'I', this)">깜깜하고 너무 외롭다...</button>
+        <button class="form-btn" onclick="nextForm(1, 'E', this)">드디어 나만의 시간! 행복하다.</button>
+      </div>
+    </div>
+    <div class="center-form" id="form2" style="transform: translateX(100%);">
+      <div class="form-title">사과하면 떠오르는 것은은?</div>
+      <img src="images/2.png" alt="질문2 이미지" style="width:480px;">
+      <div class="button-row">
+        <button class="form-btn" onclick="nextForm(2, 'S', this)">오... 빨간 사과다.</button>
+        <button class="form-btn" onclick="nextForm(2, 'N', this)">빨간 걸 보니깐 비타민 C가 풍부하겠네.</button>
+      </div>
+    </div>
+    <div class="center-form" id="form3" style="transform: translateX(100%);">
+      <div class="form-title">친구가 당신에게 "나 아파"라고 말했을 때, 당신의 기분은?</div>
+      <img src="images/3.png" alt="질문3 이미지" style="width:480px;">
+      <div class="button-row">
+        <button class="form-btn" onclick="nextForm(3, 'T', this)">어디가? 병원갔어?</button>
+        <button class="form-btn" onclick="nextForm(3, 'F', this)">괜찮아? 아프지마 ㅠㅠㅠ</button>
+      </div>
+    </div>
+    <div class="center-form" id="form4" style="transform: translateX(100%);">
+      <div class="form-title">여행 스타일은?</div>
+      <img src="images/4.png" alt="질문4 이미지" style="width:480px;">
+      <div class="button-row">
+        <button class="form-btn" onclick="nextForm(4, 'J', this)">계획적</button>
+        <button class="form-btn" onclick="nextForm(4, 'P', this)">즉흥적</button>
+      </div>
+    </div>
+    <div class="center-form" id="form5" style="flex-direction:column; justify-content:center; align-items:center; transform: translateX(100%);">
+      <div class="form-title">정보를 입력해 주세요</div>
+      <div style="display:flex; flex-direction:column; gap:1.5rem; width:100%; max-width:400px; align-items:center;">
+        <input id="username" type="text" placeholder="이름" style="width:100%; padding:1rem; font-size:1.2rem; border-radius:8px; border:1px solid #ccc;">
+        <input id="userage" type="number" placeholder="나이" style="width:100%; padding:1rem; font-size:1.2rem; border-radius:8px; border:1px solid #ccc;">
+        <select id="usergender" style="width:100%; padding:1rem; font-size:1.2rem; border-radius:8px; border:1px solid #ccc;">
+          <option value="">성별 선택</option>
+          <option value="male">남성</option>
+          <option value="female">여성</option>
+          <option value="other">기타</option>
+        </select>
+      </div>
+      <button class="result-btn" onclick="showResult()">
+        결과 보기
+      </button>
+    </div>
+  </div>
+  <script>
+    // MBTI 결과 저장용 변수
+    let mbti = "";
+
+    function nextForm(current, value, btn) {
+      // value가 있으면 mbti 문자열에 추가
+      if (value) mbti += value;
+
+      // 터지는 효과 추가
+      btn.classList.add('burst');
+      btn.disabled = true;
+
+      btn.addEventListener('animationend', function handler() {
+        btn.removeEventListener('animationend', handler);
+
+        const now = document.getElementById('form' + current);
+        const next = document.getElementById('form' + (current + 1));
+        if (!next) return;
+        now.style.transform = 'translateX(-100%)';
+        next.style.transform = 'translateX(0%)';
+        now.classList.remove('active');
+        next.classList.add('active');
+      });
+    }
+
+    function showResult() {
+      // 입력값 가져오기
+      const name = document.getElementById('username').value.trim();
+      const age = document.getElementById('userage').value.trim();
+      const genderVal = document.getElementById('usergender').value;
+      let genderText = '';
+      if (genderVal === 'male') genderText = '남';
+      else if (genderVal === 'female') genderText = '여';
+      else if (genderVal === 'other') genderText = '기타';
+      else genderText = '';
+
+      // 입력값 검증
+      if (!name || !age || !genderText) {
+        alert('이름, 나이, 성별을 모두 입력해 주세요.');
+        return;
+      }
+
+      // 결과 페이지로 변환
+      const slider = document.getElementById('slider');
+      slider.innerHTML = `
+        <div class="center-form" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <div class="form-title">
+            <b>${name}(${age}, ${genderText})</b>님의 MBTI는<br>
+            <span style="font-size:2.5rem; color:#0078d4;">${mbti}</span> 입니다!
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
