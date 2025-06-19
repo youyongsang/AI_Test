@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 페이지</title>
+    <style>
+        /* 간단한 스타일링 */
+        body { font-family: Arial, sans-serif; background: #f5f5f5; } /* 배경색과 폰트 설정 */
+        /* body는 전체 페이지의 배경색과 폰트를 설정 */
+        .login-wrapper { width: 350px; /* 로그인 박스의 너비 */
+            margin: 100px auto; /* 중앙 정렬을 위한 마진 설정 */
+            padding: 30px; /* 내부 여백 */
+            background: #fff; /* 배경색 */
+            border-radius: 10px; /* 모서리 둥글게 */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);} /* 그림자 효과 [x-이동] [y-이동] [흐림 정도] [색상]*/
+        /* 로그인 박스 스타일 */
+        .login-wrapper h2 { color: #6A24FE; 
+            margin-bottom: 20px; } /* 제목 색상과 아래 여백 */
+        .login-wrapper input { width: 100%; /* 입력 필드의 너비 */
+            margin-bottom: 12px; /* 아래 여백 */
+            padding: 10px; /* 내부 여백 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            border: 1px solid #ddd; } /* 입력 필드 스타일 [두께] [스타일] [색상]*/
+        .login-wrapper button { width: 100%; /* 버튼의 너비 */
+            padding: 12px; /* 내부 여백 */
+            background: #6A24FE; /* 버튼 배경색 */
+            color: #fff; /* 글자색 */
+            border: none; /* 테두리 없음 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            font-size: 16px;} /* 글자 크기 */
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <h2>로그인</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="이름" required>
+            <input type="password" id="password" placeholder="비밀번호" required>
+            <button type="submit">로그인</button> 
+            <!-- type="submit"은 버튼 클릭 시 폼을 제출하도록 설정 -->
+        </form>
+    </div>
+    <script>
+        // 로그인 버튼 클릭 시 이름을 다음 페이지로 전달
+        document.getElementById('loginForm').onsubmit = function(e) { //익명함수
+            e.preventDefault(); // 폼 제출 방지. 폼은 실행시 페이지를 새로고침하기 때문에 방지
+            // 입력된 이름과 비밀번호를 가져옴
+            const username = document.getElementById('username').value;
+            // 이름을 쿼리스트링으로 전달
+            window.location.href = 'mypage.html?username=' + encodeURIComponent(username);
+            // encodeURIComponent는 URL에 안전하게 전달하기 위해 사용
+            // 쿼리스트링은 URL에 데이터를 전달하는 방법으로, ? 뒤에 key=value 형태로 추가됨
+            // 예: 자기소개페이지이름.html?username=홍길동
+        }
+    </script>
+</body>
+</html>
