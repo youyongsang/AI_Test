@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>프랑스 관광 정보 - Discover France</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #4f8cff;
+      --primary-dark: #357ae8;
+      --secondary: #ffb84f;
+      --accent: #ff6b81;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #4f8cff 0%, #ffb84f 100%);
+      --gradient-secondary: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      --gradient-accent: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-item {
+      position: relative;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before {
+      left: 0;
+    }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 파리 스타일 */
+    .paris-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .paris-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+    .paris-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .paris-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .paris-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .paris-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(79, 140, 255, 0.3);
+    }
+    .paris-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(79, 140, 255, 0.4);
+      background: var(--primary-dark);
+    }
+    .paris-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .paris-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .paris-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .paris-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .paris-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .paris-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .paris-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .paris-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .paris-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #4f8cff, #ffb84f);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .paris-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .paris-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .paris-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .paris-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .paris-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .paris-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .paris-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .paris-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .paris-footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      margin: 2rem 2rem 0 2rem;
+    }
+    .paris-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .paris-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .paris-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .paris-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #4f8cff;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .paris-social-links a:hover {
+      transform: translateY(-2px);
+      background: #357ae8;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar {
+        position: static;
+      }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .navbar {
+        padding: 1rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .header-title {
+        font-size: 2.5rem;
+      }
+      .paris-hero h1 {
+        font-size: 2rem;
+      }
+      .paris-features,
+      .paris-gallery,
+      .paris-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .paris-gallery-grid,
+      .paris-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section {
+        padding: 2rem 1.5rem;
+      }
+    }
+    /* 스크롤 애니메이션 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🇫🇷 Discover France</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">프랑스 관광 정보</h1>
+      <p class="header-subtitle">예술, 미식, 낭만이 가득한 프랑스를 탐험해보세요</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🇫🇷 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('paris')">
+            <span class="region-btn-emoji">🗼</span>파리
+          </button>
+          <button class="region-btn" onclick="showRegion('nice')">
+            <span class="region-btn-emoji">🌊</span>니스
+          </button>
+          <button class="region-btn" onclick="showRegion('lyon')">
+            <span class="region-btn-emoji">🏰</span>리옹
+          </button>
+          <button class="region-btn" onclick="showRegion('provence')">
+            <span class="region-btn-emoji">🌻</span>프로방스
+          </button>
+          <button class="region-btn" onclick="showRegion('montsaintmichel')">
+            <span class="region-btn-emoji">🏝️</span>몽생미셸
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 파리 상세 -->
+        <div class="region-detail active" id="detail-paris">
+          <div class="paris-hero">
+            <div class="paris-hero-content">
+              <h1>파리에 오신 것을 환영합니다</h1>
+              <p>예술과 낭만, 미식의 도시 파리에서 특별한 추억을 만들어보세요</p>
+              <a href="#paris-intro" class="paris-cta-button">파리 탐험하기</a>
+            </div>
+          </div>
+          <div class="paris-intro" id="paris-intro">
+            <h2>파리, 빛의 도시</h2>
+            <p>
+              프랑스의 수도 파리는 에펠탑, 루브르 박물관, 샹젤리제 거리 등 세계적으로 유명한 명소가 가득한 도시입니다.<br>
+              예술, 패션, 미식, 낭만이 어우러진 파리에서 잊지 못할 여행을 경험해보세요.
+            </p>
+          </div>
+          <div class="paris-features">
+            <h2>파리의 매력</h2>
+            <div class="paris-features-grid">
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🗼</div>
+                <h3>상징적인 랜드마크</h3>
+                <p>에펠탑, 개선문, 노트르담 대성당 등 세계적으로 유명한 건축물을 감상할 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🎨</div>
+                <h3>예술과 문화</h3>
+                <p>루브르, 오르세 등 세계적인 미술관과 다양한 공연, 전시를 즐길 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🥐</div>
+                <h3>미식의 천국</h3>
+                <p>크루아상, 바게트, 프렌치 레스토랑 등 다양한 프랑스 요리를 맛보세요.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🛍️</div>
+                <h3>패션과 쇼핑</h3>
+                <p>샹젤리제, 갤러리 라파예트 등에서 최신 패션과 쇼핑을 즐길 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌳</div>
+                <h3>아름다운 공원</h3>
+                <p>뤽상부르 공원, 튈르리 정원 등 도심 속 휴식 공간이 많습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚇</div>
+                <h3>편리한 교통</h3>
+                <p>지하철, 버스 등 대중교통이 잘 발달되어 있어 여행이 편리합니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="paris-gallery">
+            <h2>파리의 명소들</h2>
+            <div class="paris-gallery-grid">
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>에펠탑</h3>
+                  <p>파리의 상징, 야경이 아름다운 랜드마크</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>루브르 박물관</h3>
+                  <p>세계 최대의 미술관, 모나리자 소장</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>샹젤리제 거리</h3>
+                  <p>패션과 쇼핑, 카페가 가득한 거리</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>노트르담 대성당</h3>
+                  <p>고딕 양식의 대표 성당</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>몽마르트 언덕</h3>
+                  <p>예술가의 거리와 사크레쾨르 성당</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>오르세 미술관</h3>
+                  <p>인상파 작품이 가득한 미술관</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="paris-footer">
+            <h3>파리 여행을 계획해보세요</h3>
+            <p>예술과 낭만이 가득한 파리에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="paris-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 파리 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 니스 -->
+        <div class="region-detail" id="detail-nice">
+          <div class="paris-hero" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <div class="paris-hero-content">
+              <h1>니스에 오신 것을 환영합니다</h1>
+              <p>지중해의 푸른 바다와 햇살, 프랑스 리비에라의 보석 니스</p>
+              <a href="#nice-intro" class="paris-cta-button" style="background:#43e97b;">니스 탐험하기</a>
+            </div>
+          </div>
+          <div class="paris-intro" id="nice-intro">
+            <h2>니스, 코트다쥐르의 휴양지</h2>
+            <p>
+              프랑스 남부의 대표 휴양지 니스는 아름다운 해변과 산책로, 활기찬 시장과 예술적 분위기로 유명합니다.<br>
+              연중 온화한 기후와 다양한 축제, 지중해 요리를 즐겨보세요.
+            </p>
+          </div>
+          <div class="paris-features">
+            <h2>니스의 매력</h2>
+            <div class="paris-features-grid">
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌊</div>
+                <h3>아름다운 해변</h3>
+                <p>프롬나드 데 장글레 산책로와 에메랄드빛 바다를 감상할 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🎨</div>
+                <h3>예술과 문화</h3>
+                <p>마티스 미술관, 샤갈 미술관 등 다양한 예술 공간이 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🍋</div>
+                <h3>다채로운 축제</h3>
+                <p>니스 카니발, 레몬 축제 등 다양한 지역 축제가 열립니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🏰</div>
+                <h3>올드타운</h3>
+                <p>알록달록한 건물과 시장, 전통 음식이 가득한 구시가지</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🍽️</div>
+                <h3>지중해 미식</h3>
+                <p>해산물, 니수아즈 샐러드 등 신선한 지중해 요리를 맛보세요.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚆</div>
+                <h3>접근성</h3>
+                <p>프랑스 주요 도시와 유럽 각지에서 기차, 비행기로 쉽게 이동할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="paris-gallery">
+            <h2>니스의 명소들</h2>
+            <div class="paris-gallery-grid">
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>프롬나드 데 장글레</h3>
+                  <p>니스 해변을 따라 이어지는 산책로</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>올드타운</h3>
+                  <p>전통 시장과 알록달록한 거리</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>마티스 미술관</h3>
+                  <p>마티스의 작품을 만날 수 있는 미술관</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>샤갈 미술관</h3>
+                  <p>샤갈의 예술 세계를 감상할 수 있는 공간</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>니스 성 언덕</h3>
+                  <p>니스 시내와 바다가 한눈에 보이는 전망대</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>꽃 시장</h3>
+                  <p>다양한 꽃과 현지 특산물을 만날 수 있는 시장</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="paris-footer">
+            <h3>니스 여행을 계획해보세요</h3>
+            <p>지중해의 햇살과 바다가 어우러진 니스에서 특별한 추억을 만들어보세요.</p>
+            <div class="paris-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 니스 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 리옹 -->
+        <div class="region-detail" id="detail-lyon">
+          <div class="paris-hero" style="background: linear-gradient(135deg, #ffb347 0%, #ff5e62 100%);">
+            <div class="paris-hero-content">
+              <h1>리옹에 오신 것을 환영합니다</h1>
+              <p>미식과 역사, 문화가 살아 숨쉬는 프랑스의 중심 도시 리옹</p>
+              <a href="#lyon-intro" class="paris-cta-button" style="background:#ffb347;">리옹 탐험하기</a>
+            </div>
+          </div>
+          <div class="paris-intro" id="lyon-intro">
+            <h2>리옹, 미식의 수도</h2>
+            <p>
+              프랑스 중부의 리옹은 유네스코 세계유산으로 지정된 구시가지와 미식의 도시로 유명합니다.<br>
+              전통 부숑 레스토랑, 로마 유적, 야경이 아름다운 도시 풍경을 즐겨보세요.
+            </p>
+          </div>
+          <div class="paris-features">
+            <h2>리옹의 매력</h2>
+            <div class="paris-features-grid">
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🏰</div>
+                <h3>역사와 유적</h3>
+                <p>로마 극장, 푸르비에르 언덕 등 다양한 유적이 남아 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🍷</div>
+                <h3>미식과 와인</h3>
+                <p>부숑 레스토랑, 현지 와인 등 프랑스 미식의 진수를 맛볼 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌉</div>
+                <h3>아름다운 야경</h3>
+                <p>사온강과 론강이 만들어내는 환상적인 야경을 감상하세요.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🎭</div>
+                <h3>문화와 예술</h3>
+                <p>오페라, 박물관, 다양한 문화 행사가 열립니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚇</div>
+                <h3>편리한 교통</h3>
+                <p>프랑스 전국 어디서든 TGV, 지하철 등으로 쉽게 이동할 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌳</div>
+                <h3>공원과 자연</h3>
+                <p>파르크 드 라 테트 도르 등 도심 속 자연을 만끽할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="paris-gallery">
+            <h2>리옹의 명소들</h2>
+            <div class="paris-gallery-grid">
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>푸르비에르 대성당</h3>
+                  <p>리옹 시내를 한눈에 볼 수 있는 언덕 위 성당</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>구시가지</h3>
+                  <p>유네스코 세계유산, 전통 골목과 부숑 레스토랑</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>로마 극장</h3>
+                  <p>고대 로마 시대의 유적지</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>사온강</h3>
+                  <p>리옹의 중심을 흐르는 강</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>파르크 드 라 테트 도르</h3>
+                  <p>넓은 호수와 동물원이 있는 대형 공원</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>벨쿠르 광장</h3>
+                  <p>리옹의 중심 광장, 만남의 장소</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="paris-footer">
+            <h3>리옹 여행을 계획해보세요</h3>
+            <p>미식과 문화가 살아있는 리옹에서 특별한 추억을 만들어보세요.</p>
+            <div class="paris-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 리옹 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 프로방스 -->
+        <div class="region-detail" id="detail-provence">
+          <div class="paris-hero" style="background: linear-gradient(135deg, #ffe259 0%, #ffa751 100%);">
+            <div class="paris-hero-content">
+              <h1>프로방스에 오신 것을 환영합니다</h1>
+              <p>라벤더 향기와 햇살, 프랑스 남부의 낭만적인 풍경</p>
+              <a href="#provence-intro" class="paris-cta-button" style="background:#ffa751;">프로방스 탐험하기</a>
+            </div>
+          </div>
+          <div class="paris-intro" id="provence-intro">
+            <h2>프로방스, 라벤더의 고장</h2>
+            <p>
+              프랑스 남부의 프로방스는 라벤더 밭, 고즈넉한 마을, 햇살 가득한 풍경으로 유명합니다.<br>
+              전통 시장, 와인, 미식, 예술가의 마을 등 다양한 매력을 느껴보세요.
+            </p>
+          </div>
+          <div class="paris-features">
+            <h2>프로방스의 매력</h2>
+            <div class="paris-features-grid">
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌻</div>
+                <h3>라벤더 밭</h3>
+                <p>여름이면 보랏빛 라벤더가 펼쳐지는 아름다운 풍경</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🏡</div>
+                <h3>고즈넉한 마을</h3>
+                <p>고르드, 루시용 등 그림 같은 마을 산책</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🍷</div>
+                <h3>와인과 미식</h3>
+                <p>현지 와인과 프로방스 요리를 맛볼 수 있습니다.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🎨</div>
+                <h3>예술가의 마을</h3>
+                <p>반 고흐, 세잔 등 예술가들이 사랑한 지역</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌞</div>
+                <h3>햇살과 자연</h3>
+                <p>연중 온화한 기후와 아름다운 자연 경관</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚗</div>
+                <h3>드라이브 여행</h3>
+                <p>아름다운 시골길과 포도밭을 따라 드라이브를 즐기세요.</p>
+              </div>
+            </div>
+          </div>
+          <div class="paris-gallery">
+            <h2>프로방스의 명소들</h2>
+            <div class="paris-gallery-grid">
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>고르드</h3>
+                  <p>언덕 위의 아름다운 마을</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>루시용</h3>
+                  <p>붉은 절벽과 예쁜 골목길</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>라벤더 밭</h3>
+                  <p>여름에 만나는 보랏빛 풍경</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>아를</h3>
+                  <p>반 고흐가 사랑한 예술의 도시</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>생레미 드 프로방스</h3>
+                  <p>고흐의 흔적이 남아있는 마을</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>폰 뒤 가르</h3>
+                  <p>로마 시대의 거대한 수로교</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="paris-footer">
+            <h3>프로방스 여행을 계획해보세요</h3>
+            <p>햇살과 라벤더 향기가 가득한 프로방스에서 특별한 추억을 만들어보세요.</p>
+            <div class="paris-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 프로방스 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 몽생미셸 -->
+        <div class="region-detail" id="detail-montsaintmichel">
+          <div class="paris-hero" style="background: linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%);">
+            <div class="paris-hero-content">
+              <h1>몽생미셸에 오신 것을 환영합니다</h1>
+              <p>바다 위의 신비로운 수도원, 프랑스의 대표 명소 몽생미셸</p>
+              <a href="#montsaintmichel-intro" class="paris-cta-button" style="background:#0ed2f7;">몽생미셸 탐험하기</a>
+            </div>
+          </div>
+          <div class="paris-intro" id="montsaintmichel-intro">
+            <h2>몽생미셸, 바다 위의 수도원</h2>
+            <p>
+              프랑스 북서부 노르망디 해안에 위치한 몽생미셸은 밀물과 썰물에 따라 섬이 되었다가 육지가 되는 신비로운 명소입니다.<br>
+              중세 수도원과 아름다운 풍경을 감상해보세요.
+            </p>
+          </div>
+          <div class="paris-features">
+            <h2>몽생미셸의 매력</h2>
+            <div class="paris-features-grid">
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🏝️</div>
+                <h3>신비로운 섬</h3>
+                <p>밀물과 썰물에 따라 바다 위에 떠오르는 섬</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">⛪</div>
+                <h3>중세 수도원</h3>
+                <p>천년의 역사를 간직한 수도원과 성곽</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🌅</div>
+                <h3>아름다운 일출과 일몰</h3>
+                <p>바다와 하늘이 어우러진 환상적인 풍경</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🍳</div>
+                <h3>특별한 미식</h3>
+                <p>몽생미셸 오믈렛 등 현지 특산 요리</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚶</div>
+                <h3>산책과 탐방</h3>
+                <p>섬 전체를 둘러보며 중세의 분위기를 만끽하세요.</p>
+              </div>
+              <div class="paris-feature-card">
+                <div class="paris-feature-icon">🚌</div>
+                <h3>접근성</h3>
+                <p>파리, 렌 등 프랑스 주요 도시에서 버스, 기차로 이동 가능</p>
+              </div>
+            </div>
+          </div>
+          <div class="paris-gallery">
+            <h2>몽생미셸의 명소들</h2>
+            <div class="paris-gallery-grid">
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>몽생미셸 수도원</h3>
+                  <p>섬 정상에 위치한 중세 수도원</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>성곽길</h3>
+                  <p>섬을 둘러싼 성벽 산책로</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>그랑뤼 거리</h3>
+                  <p>기념품 가게와 레스토랑이 모여있는 거리</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>밀물/썰물 전망대</h3>
+                  <p>바다의 변화와 풍경을 감상할 수 있는 포인트</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>생피에르 교회</h3>
+                  <p>아담하고 고즈넉한 섬의 교회</p>
+                </div>
+              </div>
+              <div class="paris-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="paris-gallery-item-content">
+                  <h3>몽생미셸 입구</h3>
+                  <p>섬으로 들어가는 관문</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="paris-footer">
+            <h3>몽생미셸 여행을 계획해보세요</h3>
+            <p>바다 위의 신비로운 섬 몽생미셸에서 특별한 추억을 만들어보세요.</p>
+            <div class="paris-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 몽생미셸 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script>
+    // 지역 탭 전환
+    function showRegion(region) {
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(region));
+      });
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      const target = document.getElementById('detail-' + region);
+      if (target) target.classList.add('active');
+    }
+    // 페이지 로드시 파리가 기본 활성화
+    document.addEventListener('DOMContentLoaded', () => {
+      showRegion('paris');
+    });
+
+    // 특징 메뉴 클릭 시 현재 활성 지역의 "매력" 파트로 스크롤 (살짝 위로)
+    function focusFeatures(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      // 모든 지역이 동일 클래스 사용
+      const features = activeRegion.querySelector('.paris-features');
+      if (features) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+
+    // 명소 메뉴 클릭 시 현재 활성 지역의 "명소들" 파트로 스크롤 (살짝 위로)
+    function focusGallery(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const gallery = activeRegion.querySelector('.paris-gallery');
+      if (gallery) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+
+    // UX: 지역탭 키보드 접근성 개선
+    document.querySelectorAll('.region-btn').forEach(btn => {
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
+
+    // UI: 모바일에서 메뉴 토글(간단 예시)
+    // 필요시 햄버거 메뉴 구현 가능
+
+  </script>
+</body>
+</html>

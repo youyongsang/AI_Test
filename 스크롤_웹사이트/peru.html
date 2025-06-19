@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>페루 관광 정보 - Discover Peru</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #e17055;
+      --primary-dark: #d35400;
+      --secondary: #fdcb6e;
+      --accent: #00b894;
+      --text-dark: #2d3436;
+      --text-light: #636e72;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-item { position: relative; }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before { left: 0; }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 리마 스타일 */
+    .lima-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .lima-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .lima-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .lima-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .lima-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(225, 112, 85, 0.3);
+    }
+    .lima-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(225, 112, 85, 0.4);
+      background: var(--primary-dark);
+    }
+    .lima-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .lima-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .lima-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .lima-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .lima-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .lima-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .lima-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .lima-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .lima-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #e17055, #fdcb6e);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .lima-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .lima-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .lima-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .lima-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .lima-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .lima-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .lima-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .lima-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .lima-footer {
+      background: #2d3436;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      margin: 2rem 2rem 0 2rem;
+    }
+    .lima-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .lima-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .lima-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .lima-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #e17055;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .lima-social-links a:hover {
+      transform: translateY(-2px);
+      background: #d35400;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar { position: static; }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .navbar { padding: 1rem; }
+      .nav-menu { display: none; }
+      .header-title { font-size: 2.5rem; }
+      .lima-hero h1 { font-size: 2rem; }
+      .lima-features,
+      .lima-gallery,
+      .lima-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .lima-gallery-grid,
+      .lima-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🇵🇪 Discover Peru</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">페루 관광 정보</h1>
+      <p class="header-subtitle">잉카 문명과 자연의 경이로움을 만나는 남미의 보석</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🇵🇪 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('lima')">
+            <span class="region-btn-emoji">🏙️</span>리마
+          </button>
+          <button class="region-btn" onclick="showRegion('cusco')">
+            <span class="region-btn-emoji">🏔️</span>쿠스코
+          </button>
+          <button class="region-btn" onclick="showRegion('machupicchu')">
+            <span class="region-btn-emoji">🗿</span>마추픽추
+          </button>
+          <button class="region-btn" onclick="showRegion('titica')">
+            <span class="region-btn-emoji">🚤</span>티티카카호
+          </button>
+          <button class="region-btn" onclick="showRegion('nazca')">
+            <span class="region-btn-emoji">✈️</span>나스카
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 리마 상세 -->
+        <div class="region-detail active" id="detail-lima">
+          <div class="lima-hero">
+            <div class="lima-hero-content">
+              <h1>리마에 오신 것을 환영합니다</h1>
+              <p>페루의 수도, 역사와 미식이 어우러진 도시 리마</p>
+              <a href="#lima-intro" class="lima-cta-button">리마 탐험하기</a>
+            </div>
+          </div>
+          <div class="lima-intro" id="lima-intro">
+            <h2>리마, 남미의 미식 수도</h2>
+            <p>
+              태평양 연안에 위치한 리마는 페루의 수도이자 남미 최고의 미식 도시입니다.<br>
+              식민지 시대 건축물, 박물관, 해안 절벽, 다양한 페루 요리를 경험해보세요.
+            </p>
+          </div>
+          <div class="lima-features">
+            <h2>리마의 매력</h2>
+            <div class="lima-features-grid">
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🏛️</div>
+                <h3>역사적 유산</h3>
+                <p>식민지 시대 건축물과 유네스코 세계유산 구시가지</p>
+              </div>
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🍽️</div>
+                <h3>미식의 도시</h3>
+                <p>세비체, 페루 전통 요리 등 다양한 미식 체험</p>
+              </div>
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🌊</div>
+                <h3>아름다운 해안</h3>
+                <p>미라플로레스, 바랑코 등 해안 절벽과 바다 풍경</p>
+              </div>
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🎨</div>
+                <h3>예술과 문화</h3>
+                <p>박물관, 거리 예술, 다양한 문화 행사</p>
+              </div>
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🛍️</div>
+                <h3>쇼핑과 시장</h3>
+                <p>현지 시장, 수공예품, 전통 기념품 쇼핑</p>
+              </div>
+              <div class="lima-feature-card">
+                <div class="lima-feature-icon">🚇</div>
+                <h3>편리한 교통</h3>
+                <p>공항, 버스, 메트로 등 다양한 교통수단</p>
+              </div>
+            </div>
+          </div>
+          <div class="lima-gallery">
+            <h2>리마의 명소들</h2>
+            <div class="lima-gallery-grid">
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>플라사 마요르</h3>
+                  <p>리마의 중심 광장, 유네스코 세계유산</p>
+                </div>
+              </div>
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>미라플로레스</h3>
+                  <p>해안 절벽과 쇼핑, 레스토랑이 모인 지역</p>
+                </div>
+              </div>
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>바랑코</h3>
+                  <p>예술가의 거리, 감성적인 분위기</p>
+                </div>
+              </div>
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>라르코 박물관</h3>
+                  <p>페루 고대 문명 유물 전시</p>
+                </div>
+              </div>
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>코스타 베르데</h3>
+                  <p>태평양을 따라 펼쳐진 해안 도로</p>
+                </div>
+              </div>
+              <div class="lima-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="lima-gallery-item-content">
+                  <h3>산프란시스코 수도원</h3>
+                  <p>식민지 시대 건축과 지하 카타콤</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lima-footer">
+            <h3>리마 여행을 계획해보세요</h3>
+            <p>역사와 미식, 바다 풍경이 어우러진 리마에서 특별한 추억을 만들어보세요.</p>
+            <div class="lima-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 리마 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 다른 지역(쿠스코, 마추픽추, 티티카카호, 나스카)도 위와 같은 구조로 추가 가능 -->
+      </section>
+    </div>
+  </div>
+  <script>
+    function showRegion(region) {
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(region));
+      });
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      const target = document.getElementById('detail-' + region);
+      if (target) target.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      showRegion('lima');
+    });
+
+    function focusFeatures(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const features = activeRegion.querySelector('.lima-features');
+      if (features) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+    function focusGallery(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const gallery = activeRegion.querySelector('.lima-gallery');
+      if (gallery) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

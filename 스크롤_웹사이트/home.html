@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Universal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', '맑은 고딕', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    /* 배경 애니메이션 */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.1;
+    }
+    
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+    
+    .floating-shape:nth-child(2) {
+      width: 120px;
+      height: 120px;
+      top: 60%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+    
+    .floating-shape:nth-child(3) {
+      width: 60px;
+      height: 60px;
+      bottom: 30%;
+      left: 70%;
+      animation-delay: 4s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    /* 헤더 */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      padding: 2rem 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .logo {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    
+    .tagline {
+      font-size: 1.2rem;
+      color: #666;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.5s forwards;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* 메인 컨테이너 */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    /* 카드 스타일 */
+    .destination-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+      transform: translateY(60px);
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .destination-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .destination-card:hover::before {
+      left: 100%;
+    }
+    
+    .destination-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .destination-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    
+    .destination-card:hover .card-image {
+      transform: scale(1.1);
+    }
+    
+    .card-content {
+      padding: 2rem;
+    }
+    
+    .card-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .card-description {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #666;
+      opacity: 0.9;
+    }
+    
+    .card-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .destination-card:hover .card-overlay {
+      transform: scaleX(1);
+    }
+    
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 2.5rem;
+      }
+      
+      .tagline {
+        font-size: 1rem;
+      }
+      
+      .container {
+        padding: 2rem 1rem;
+      }
+      
+      .section-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .card-content {
+        padding: 1.5rem;
+      }
+      
+      .card-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.3);
+      z-index: 1000;
+    }
+    
+    .scroll-progress {
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+  </style>
+</head>
+<body>
+  <!-- 배경 애니메이션 -->
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+  
+  <!-- 스크롤 인디케이터 -->
+  <div class="scroll-indicator">
+    <div class="scroll-progress"></div>
+  </div>
+  
+  <!-- 헤더 -->
+  <header>
+    <div class="header-content">
+      <h1 class="logo">Discover Universal</h1>
+      <p class="tagline">세계를 발견하고, 꿈을 현실로 만들어보세요</p>
+    </div>
+  </header>
+  
+  <!-- 메인 컨테이너 -->
+  <div class="container">
+    <div class="section-grid">
+      <a href="japan.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=600&q=80" alt="일본" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">일본</h2>
+          <p class="card-description">
+            전통과 현대가 완벽하게 조화를 이루는 신비로운 동아시아의 섬나라. 
+            사계절의 절경, 독특한 음식 문화, 그리고 따뜻한 온천이 당신을 기다립니다.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+      
+      <a href="france.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="프랑스" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">프랑스</h2>
+          <p class="card-description">
+            예술과 패션의 중심지, 그리고 미식의 천국. 파리의 낭만적인 거리부터 
+            프로방스의 라벤더 밭까지, 유럽의 진정한 매력을 경험해보세요.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+      
+      <a href="china.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="중국" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">중국</h2>
+          <p class="card-description">
+            5천년 역사의 웅장함과 현대적 역동성이 공존하는 거대한 대륙. 
+            만리장성부터 상하이의 마천루까지, 무한한 발견이 기다립니다.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+      
+      <a href="italy.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80" alt="이탈리아" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">이탈리아</h2>
+          <p class="card-description">
+            로마 제국의 영광과 르네상스의 찬란함이 살아 숨쉬는 곳. 
+            예술, 역사, 그리고 세계 최고의 요리가 어우러진 완벽한 여행지입니다.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+      
+      <a href="usa.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80" alt="미국" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">미국</h2>
+          <p class="card-description">
+            무한한 가능성의 땅에서 꿈을 현실로. 뉴욕의 에너지부터 
+            그랜드캐니언의 장엄함까지, 다양성이 만들어내는 특별한 경험을 만나보세요.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+      
+      <a href="peru.html" class="destination-card">
+        <img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80" alt="페루" class="card-image">
+        <div class="card-content">
+          <h2 class="card-title">페루</h2>
+          <p class="card-description">
+            신비로운 잉카 문명의 유산과 안데스 산맥의 절경이 만나는 곳. 
+            마추픽추의 고대 신비를 통해 역사와 자연의 경이로움을 발견하세요.
+          </p>
+        </div>
+        <div class="card-overlay"></div>
+      </a>
+    </div>
+  </div>
+  
+  <script>
+    // 스크롤 애니메이션
+    function handleScroll() {
+      // 카드 페이드인 효과
+      const cards = document.querySelectorAll('.destination-card');
+      const trigger = window.innerHeight * 0.8;
+      
+      cards.forEach((card, index) => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < trigger) {
+          setTimeout(() => {
+            card.classList.add('visible');
+          }, index * 150);
+        }
+      });
+      
+      // 스크롤 진행도
+      const scrollProgress = document.querySelector('.scroll-progress');
+      const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      scrollProgress.style.width = scrollPercent + '%';
+    }
+    
+    // 이벤트 리스너
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('DOMContentLoaded', handleScroll);
+    
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // 카드 호버 효과 강화
+    document.querySelectorAll('.destination-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(-5px) scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>

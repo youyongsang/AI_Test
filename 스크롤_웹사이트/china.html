@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>중국 관광 정보 - Discover China</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #e74c3c;
+      --primary-dark: #c0392b;
+      --secondary: #f1c40f;
+      --accent: #27ae60;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #e74c3c 0%, #f1c40f 100%);
+      --gradient-secondary: linear-gradient(135deg, #ffeaa7 0%, #f6e58d 100%);
+      --gradient-accent: linear-gradient(135deg, #27ae60 0%, #16a085 100%);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-item { position: relative; }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before { left: 0; }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 베이징 스타일 */
+    .beijing-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .beijing-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+    .beijing-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .beijing-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .beijing-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .beijing-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(231, 76, 60, 0.3);
+    }
+    .beijing-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(231, 76, 60, 0.4);
+      background: var(--primary-dark);
+    }
+    .beijing-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .beijing-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .beijing-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .beijing-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .beijing-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .beijing-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .beijing-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .beijing-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .beijing-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #e74c3c, #f1c40f);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .beijing-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .beijing-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .beijing-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .beijing-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .beijing-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .beijing-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .beijing-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .beijing-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .beijing-footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      margin: 2rem 2rem 0 2rem;
+    }
+    .beijing-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .beijing-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .beijing-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .beijing-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #e74c3c;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .beijing-social-links a:hover {
+      transform: translateY(-2px);
+      background: #c0392b;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar { position: static; }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .navbar { padding: 1rem; }
+      .nav-menu { display: none; }
+      .header-title { font-size: 2.5rem; }
+      .beijing-hero h1 { font-size: 2rem; }
+      .beijing-features,
+      .beijing-gallery,
+      .beijing-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .beijing-gallery-grid,
+      .beijing-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section { padding: 2rem 1.5rem; }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🐉 Discover China</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">중국 관광 정보</h1>
+      <p class="header-subtitle">오랜 역사와 다양한 문화, 광활한 대륙을 경험하세요</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🐲 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('beijing')">
+            <span class="region-btn-emoji">🏯</span>베이징
+          </button>
+          <button class="region-btn" onclick="showRegion('shanghai')">
+            <span class="region-btn-emoji">🌆</span>상하이
+          </button>
+          <button class="region-btn" onclick="showRegion('xian')">
+            <span class="region-btn-emoji">🗿</span>시안
+          </button>
+          <button class="region-btn" onclick="showRegion('guilin')">
+            <span class="region-btn-emoji">⛰️</span>구이린
+          </button>
+          <button class="region-btn" onclick="showRegion('chengdu')">
+            <span class="region-btn-emoji">🐼</span>청두
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 베이징 상세 -->
+        <div class="region-detail active" id="detail-beijing">
+          <div class="beijing-hero">
+            <div class="beijing-hero-content">
+              <h1>베이징에 오신 것을 환영합니다</h1>
+              <p>중국의 수도, 역사와 현대가 공존하는 베이징을 만나보세요</p>
+              <a href="#beijing-intro" class="beijing-cta-button">베이징 탐험하기</a>
+            </div>
+          </div>
+          <div class="beijing-intro" id="beijing-intro">
+            <h2>베이징, 천년의 수도</h2>
+            <p>
+              중국의 수도 베이징은 자금성, 만리장성, 천안문 등 세계적인 유적과 현대적인 도시 풍경이 어우러진 곳입니다.<br>
+              오랜 역사와 전통, 다양한 먹거리와 문화를 경험할 수 있습니다.
+            </p>
+          </div>
+          <div class="beijing-features">
+            <h2>베이징의 매력</h2>
+            <div class="beijing-features-grid">
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🏯</div>
+                <h3>세계유산 유적</h3>
+                <p>자금성, 만리장성, 이화원 등 유네스코 세계유산이 가득합니다.</p>
+              </div>
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🥟</div>
+                <h3>다채로운 음식</h3>
+                <p>베이징덕, 딤섬, 다양한 중국 요리를 맛볼 수 있습니다.</p>
+              </div>
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🏙️</div>
+                <h3>현대적 도시</h3>
+                <p>CBD, CCTV타워 등 현대적인 스카이라인과 전통이 공존합니다.</p>
+              </div>
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🎭</div>
+                <h3>전통 예술</h3>
+                <p>경극, 서예, 전통 공예 등 중국 문화의 진수를 체험하세요.</p>
+              </div>
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🌳</div>
+                <h3>공원과 자연</h3>
+                <p>이화원, 베이하이 공원 등 도심 속 자연을 만끽할 수 있습니다.</p>
+              </div>
+              <div class="beijing-feature-card">
+                <div class="beijing-feature-icon">🚄</div>
+                <h3>편리한 교통</h3>
+                <p>지하철, 고속철 등 중국 전역 어디든 쉽게 이동할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="beijing-gallery">
+            <h2>베이징의 명소들</h2>
+            <div class="beijing-gallery-grid">
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>자금성</h3>
+                  <p>중국 황제의 궁전, 세계 최대의 궁궐</p>
+                </div>
+              </div>
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>만리장성</h3>
+                  <p>세계 7대 불가사의, 중국의 상징</p>
+                </div>
+              </div>
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>천안문 광장</h3>
+                  <p>중국 현대사의 중심지</p>
+                </div>
+              </div>
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>이화원</h3>
+                  <p>아름다운 호수와 정원이 있는 궁전</p>
+                </div>
+              </div>
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>베이하이 공원</h3>
+                  <p>도심 속 자연과 휴식 공간</p>
+                </div>
+              </div>
+              <div class="beijing-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="beijing-gallery-item-content">
+                  <h3>798 예술구</h3>
+                  <p>현대 예술과 문화가 살아있는 거리</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="beijing-footer">
+            <h3>베이징 여행을 계획해보세요</h3>
+            <p>역사와 현대가 어우러진 베이징에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="beijing-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 베이징 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 다른 지역(상하이, 시안, 구이린, 청두)도 위와 같은 구조로 추가 가능 -->
+      </section>
+    </div>
+  </div>
+  <script>
+    function showRegion(region) {
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(region));
+      });
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      const target = document.getElementById('detail-' + region);
+      if (target) target.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      showRegion('beijing');
+    });
+
+    function focusFeatures(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const features = activeRegion.querySelector('.beijing-features');
+      if (features) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+    function focusGallery(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const gallery = activeRegion.querySelector('.beijing-gallery');
+      if (gallery) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국 관광 정보 - Discover USA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #fbbf24;
+      --accent: #ef4444;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #fbbf24 100%);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-item { position: relative; }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before { left: 0; }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 뉴욕 스타일 */
+    .ny-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ny-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .ny-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .ny-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .ny-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+    }
+    .ny-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+      background: var(--primary-dark);
+    }
+    .ny-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .ny-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .ny-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .ny-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .ny-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .ny-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .ny-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .ny-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .ny-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #3b82f6, #fbbf24);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .ny-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .ny-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .ny-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .ny-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .ny-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .ny-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .ny-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .ny-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .ny-footer {
+      background: #1e293b;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      margin: 2rem 2rem 0 2rem;
+    }
+    .ny-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .ny-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .ny-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .ny-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .ny-social-links a:hover {
+      transform: translateY(-2px);
+      background: #2563eb;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar { position: static; }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .navbar { padding: 1rem; }
+      .nav-menu { display: none; }
+      .header-title { font-size: 2.5rem; }
+      .ny-hero h1 { font-size: 2rem; }
+      .ny-features,
+      .ny-gallery,
+      .ny-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .ny-gallery-grid,
+      .ny-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🇺🇸 Discover USA</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">미국 관광 정보</h1>
+      <p class="header-subtitle">다양한 문화와 대자연, 세계적인 도시를 경험하세요</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🇺🇸 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('ny')">
+            <span class="region-btn-emoji">🗽</span>뉴욕
+          </button>
+          <button class="region-btn" onclick="showRegion('la')">
+            <span class="region-btn-emoji">🌴</span>LA
+          </button>
+          <button class="region-btn" onclick="showRegion('sf')">
+            <span class="region-btn-emoji">🌉</span>샌프란시스코
+          </button>
+          <button class="region-btn" onclick="showRegion('lv')">
+            <span class="region-btn-emoji">🎰</span>라스베이거스
+          </button>
+          <button class="region-btn" onclick="showRegion('gc')">
+            <span class="region-btn-emoji">🏜️</span>그랜드캐니언
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 뉴욕 상세 -->
+        <div class="region-detail active" id="detail-ny">
+          <div class="ny-hero">
+            <div class="ny-hero-content">
+              <h1>뉴욕에 오신 것을 환영합니다</h1>
+              <p>세계의 중심, 다양한 문화와 예술이 살아있는 도시 뉴욕</p>
+              <a href="#ny-intro" class="ny-cta-button">뉴욕 탐험하기</a>
+            </div>
+          </div>
+          <div class="ny-intro" id="ny-intro">
+            <h2>뉴욕, 세계의 도시</h2>
+            <p>
+              미국 최대의 도시 뉴욕은 자유의 여신상, 센트럴파크, 타임스퀘어 등 세계적으로 유명한 명소가 가득합니다.<br>
+              브로드웨이 뮤지컬, 다양한 음식, 쇼핑, 예술을 경험해보세요.
+            </p>
+          </div>
+          <div class="ny-features">
+            <h2>뉴욕의 매력</h2>
+            <div class="ny-features-grid">
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🗽</div>
+                <h3>상징적인 랜드마크</h3>
+                <p>자유의 여신상, 엠파이어스테이트 빌딩 등 세계적인 명소</p>
+              </div>
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🎭</div>
+                <h3>예술과 공연</h3>
+                <p>브로드웨이 뮤지컬, 현대미술관 등 다양한 문화 체험</p>
+              </div>
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🌳</div>
+                <h3>도심 속 자연</h3>
+                <p>센트럴파크, 하이라인 등 휴식 공간</p>
+              </div>
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🍕</div>
+                <h3>다양한 음식</h3>
+                <p>피자, 핫도그, 세계 각국의 요리를 맛볼 수 있습니다.</p>
+              </div>
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🛍️</div>
+                <h3>쇼핑 천국</h3>
+                <p>5번가, 소호 등에서 쇼핑을 즐기세요.</p>
+              </div>
+              <div class="ny-feature-card">
+                <div class="ny-feature-icon">🚇</div>
+                <h3>편리한 교통</h3>
+                <p>지하철, 택시 등 대중교통이 잘 발달되어 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="ny-gallery">
+            <h2>뉴욕의 명소들</h2>
+            <div class="ny-gallery-grid">
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>자유의 여신상</h3>
+                  <p>미국의 상징, 뉴욕의 랜드마크</p>
+                </div>
+              </div>
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>센트럴파크</h3>
+                  <p>도심 속 거대한 공원</p>
+                </div>
+              </div>
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>타임스퀘어</h3>
+                  <p>화려한 네온사인과 공연의 거리</p>
+                </div>
+              </div>
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>엠파이어스테이트 빌딩</h3>
+                  <p>뉴욕 시내를 한눈에 볼 수 있는 전망대</p>
+                </div>
+              </div>
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>브루클린 브리지</h3>
+                  <p>뉴욕의 대표적인 다리</p>
+                </div>
+              </div>
+              <div class="ny-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="ny-gallery-item-content">
+                  <h3>메트로폴리탄 미술관</h3>
+                  <p>세계 3대 미술관 중 하나</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ny-footer">
+            <h3>뉴욕 여행을 계획해보세요</h3>
+            <p>다양한 문화와 예술, 명소가 가득한 뉴욕에서 특별한 추억을 만들어보세요.</p>
+            <div class="ny-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 뉴욕 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 다른 도시(LA, 샌프란시스코, 라스베이거스, 그랜드캐니언)도 위와 같은 구조로 추가 가능 -->
+      </section>
+    </div>
+  </div>
+  <script>
+    function showRegion(region) {
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(region));
+      });
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      const target = document.getElementById('detail-' + region);
+      if (target) target.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      showRegion('ny');
+    });
+
+    function focusFeatures(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const features = activeRegion.querySelector('.ny-features');
+      if (features) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+    function focusGallery(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const gallery = activeRegion.querySelector('.ny-gallery');
+      if (gallery) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

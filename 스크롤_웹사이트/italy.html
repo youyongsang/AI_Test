@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이탈리아 관광 정보 - Discover Italy</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #27ae60;
+      --primary-dark: #219150;
+      --secondary: #f7ca18;
+      --accent: #e74c3c;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #27ae60 0%, #f7ca18 100%);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-item { position: relative; }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before { left: 0; }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 로마 스타일 */
+    .rome-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .rome-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .rome-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .rome-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .rome-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(39, 174, 96, 0.3);
+    }
+    .rome-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(39, 174, 96, 0.4);
+      background: var(--primary-dark);
+    }
+    .rome-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .rome-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .rome-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .rome-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .rome-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .rome-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .rome-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .rome-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .rome-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #27ae60, #f7ca18);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .rome-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .rome-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .rome-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .rome-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .rome-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .rome-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .rome-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .rome-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .rome-footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      margin: 2rem 2rem 0 2rem;
+    }
+    .rome-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .rome-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .rome-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .rome-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #27ae60;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .rome-social-links a:hover {
+      transform: translateY(-2px);
+      background: #219150;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar { position: static; }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .navbar { padding: 1rem; }
+      .nav-menu { display: none; }
+      .header-title { font-size: 2.5rem; }
+      .rome-hero h1 { font-size: 2rem; }
+      .rome-features,
+      .rome-gallery,
+      .rome-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .rome-gallery-grid,
+      .rome-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🇮🇹 Discover Italy</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">이탈리아 관광 정보</h1>
+      <p class="header-subtitle">고대 로마의 유산과 르네상스 예술, 미식의 나라 이탈리아를 만나보세요</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🇮🇹 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('rome')">
+            <span class="region-btn-emoji">🏛️</span>로마
+          </button>
+          <button class="region-btn" onclick="showRegion('venice')">
+            <span class="region-btn-emoji">🚤</span>베네치아
+          </button>
+          <button class="region-btn" onclick="showRegion('florence')">
+            <span class="region-btn-emoji">🎨</span>피렌체
+          </button>
+          <button class="region-btn" onclick="showRegion('milan')">
+            <span class="region-btn-emoji">👗</span>밀라노
+          </button>
+          <button class="region-btn" onclick="showRegion('naples')">
+            <span class="region-btn-emoji">🍕</span>나폴리
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 로마 상세 -->
+        <div class="region-detail active" id="detail-rome">
+          <div class="rome-hero">
+            <div class="rome-hero-content">
+              <h1>로마에 오신 것을 환영합니다</h1>
+              <p>고대와 현대가 공존하는 영원의 도시 로마를 만나보세요</p>
+              <a href="#rome-intro" class="rome-cta-button">로마 탐험하기</a>
+            </div>
+          </div>
+          <div class="rome-intro" id="rome-intro">
+            <h2>로마, 영원의 도시</h2>
+            <p>
+              이탈리아의 수도 로마는 고대 로마 제국의 유산과 르네상스 예술, 현대적인 도시의 매력이 어우러진 곳입니다.<br>
+              콜로세움, 바티칸, 트레비 분수 등 세계적인 명소를 경험해보세요.
+            </p>
+          </div>
+          <div class="rome-features">
+            <h2>로마의 매력</h2>
+            <div class="rome-features-grid">
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">🏛️</div>
+                <h3>고대 유적</h3>
+                <p>콜로세움, 포로 로마노 등 고대 로마의 유산이 가득합니다.</p>
+              </div>
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">⛲</div>
+                <h3>아름다운 분수</h3>
+                <p>트레비 분수, 나보나 광장 등 로마의 분수를 감상하세요.</p>
+              </div>
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">🎨</div>
+                <h3>예술과 문화</h3>
+                <p>바티칸 박물관, 시스티나 성당 등 예술의 진수를 느낄 수 있습니다.</p>
+              </div>
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">🍝</div>
+                <h3>이탈리아 미식</h3>
+                <p>파스타, 젤라또 등 다양한 이탈리아 음식을 맛보세요.</p>
+              </div>
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">🛵</div>
+                <h3>로마의 거리</h3>
+                <p>스쿠터와 함께하는 로마의 낭만적인 골목길 산책</p>
+              </div>
+              <div class="rome-feature-card">
+                <div class="rome-feature-icon">🚇</div>
+                <h3>편리한 교통</h3>
+                <p>지하철, 버스 등 대중교통이 잘 발달되어 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rome-gallery">
+            <h2>로마의 명소들</h2>
+            <div class="rome-gallery-grid">
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>콜로세움</h3>
+                  <p>고대 로마의 대표 원형 경기장</p>
+                </div>
+              </div>
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>트레비 분수</h3>
+                  <p>동전을 던지면 소원이 이루어진다는 분수</p>
+                </div>
+              </div>
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>바티칸 시국</h3>
+                  <p>세계에서 가장 작은 나라, 예술과 신앙의 중심</p>
+                </div>
+              </div>
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>포로 로마노</h3>
+                  <p>고대 로마의 정치·상업 중심지</p>
+                </div>
+              </div>
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>나보나 광장</h3>
+                  <p>분수와 예술가들이 모이는 광장</p>
+                </div>
+              </div>
+              <div class="rome-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="rome-gallery-item-content">
+                  <h3>스페인 계단</h3>
+                  <p>로마의 명소, 영화의 배경지</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rome-footer">
+            <h3>로마 여행을 계획해보세요</h3>
+            <p>고대와 현대가 어우러진 로마에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="rome-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 로마 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 다른 도시(베네치아, 피렌체, 밀라노, 나폴리)도 위와 같은 구조로 추가 가능 -->
+      </section>
+    </div>
+  </div>
+  <script>
+    function showRegion(region) {
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(region));
+      });
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      const target = document.getElementById('detail-' + region);
+      if (target) target.classList.add('active');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      showRegion('rome');
+    });
+
+    function focusFeatures(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const features = activeRegion.querySelector('.rome-features');
+      if (features) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+    function focusGallery(e) {
+      e.preventDefault();
+      const activeRegion = document.querySelector('.region-detail.active');
+      if (!activeRegion) return;
+      const gallery = activeRegion.querySelector('.rome-gallery');
+      if (gallery) {
+        const navbar = document.querySelector('.navbar');
+        const navHeight = navbar ? navbar.offsetHeight : 0;
+        const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

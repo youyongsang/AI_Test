@@ -2,86 +2,1118 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>일본 여행 소개</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일본 관광 정보 - Discover Japan</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary: #ff6b6b;
+      --primary-dark: #e55a5a;
+      --secondary: #4ecdc4;
+      --accent: #45b7d1;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --shadow-light: rgba(0, 0, 0, 0.05);
+      --shadow-medium: rgba(0, 0, 0, 0.1);
+      --shadow-strong: rgba(0, 0, 0, 0.15);
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-secondary: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+      --gradient-accent: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
       margin: 0;
-      font-family: 'Segoe UI', '맑은 고딕', Arial, sans-serif;
-      background: #f7f7f7;
-      color: #222;
+      padding: 0;
     }
-    .home-link {
+    .navbar {
       position: fixed;
-      top: 24px;
-      left: 24px;
-      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      text-decoration: none;
     }
-    .home-link img {
-      width: 40px;
-      height: 40px;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      background: #fff;
-      transition: box-shadow 0.2s;
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .home-link img:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }
-    .container {
-      max-width: 800px;
-      margin: 60px auto;
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-      padding: 2.5rem 2rem;
-    }
-    .title {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #4f8cff;
-      margin-bottom: 1.5rem;
-    }
-    .desc {
-      font-size: 1.2rem;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-    .img-row {
+    .nav-menu {
       display: flex;
       gap: 2rem;
-      flex-wrap: wrap;
+      list-style: none;
+    }
+    .nav-item {
+      position: relative;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+    .nav-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      margin-top: 80px;
+    }
+    .header {
+      text-align: center;
+      padding: 4rem 0 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.03;
+      border-radius: 0 0 50px 50px;
+    }
+    .header-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInUp 1s ease;
+    }
+    .header-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+      min-height: 80vh;
+    }
+    .sidebar {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+    }
+    .region-tabs {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+    .tabs-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    .region-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 0.5rem;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .region-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .region-btn:hover::before,
+    .region-btn.active::before {
+      left: 0;
+    }
+    .region-btn:hover,
+    .region-btn.active {
+      color: white;
+      transform: translateX(5px);
+      box-shadow: 0 8px 25px var(--shadow-medium);
+    }
+    .region-btn-emoji {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .content-area {
+      position: relative;
+      min-height: 600px;
+    }
+    .region-detail {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+      background: var(--surface);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px var(--shadow-light);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      padding: 0;
+    }
+    .region-detail.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      position: static;
+      z-index: 2;
+      padding: 0;
+    }
+    /* 도쿄 스타일 */
+    .tokyo-hero {
+      height: 400px;
+      background: var(--gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .tokyo-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+    .tokyo-hero-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 0 2rem;
+    }
+    .tokyo-hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease;
+    }
+    .tokyo-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+    .tokyo-cta-button {
+      display: inline-block;
+      padding: 15px 35px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.6s both;
+      box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+    }
+    .tokyo-cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+      background: var(--primary-dark);
+    }
+    .tokyo-intro {
+      padding: 3rem 2.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .tokyo-intro h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+    .tokyo-intro p {
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .tokyo-features {
+      background: #f8f9fa;
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 2rem 2rem 2rem;
+    }
+    .tokyo-features h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-dark);
+    }
+    .tokyo-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .tokyo-feature-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .tokyo-feature-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .tokyo-feature-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.7rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    .tokyo-feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-dark);
+    }
+    .tokyo-feature-card p {
+      color: var(--text-light);
+      line-height: 1.5;
+      font-size: 0.97rem;
+    }
+    .tokyo-gallery {
+      padding: 2rem 2rem 0 2rem;
+    }
+    .tokyo-gallery h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-dark);
+    }
+    .tokyo-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
       margin-bottom: 2rem;
     }
-    .img-row img {
-      width: 220px;
-      height: 160px;
-      object-fit: cover;
+    .tokyo-gallery-item {
+      position: relative;
+      height: 180px;
+      background: #333;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      background-size: cover;
+      background-position: center;
+    }
+    .tokyo-gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.32);
+      z-index: 1;
+    }
+    .tokyo-gallery-item-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 0 0 15px 15px;
+    }
+    .tokyo-footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
       border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin: 2rem 2rem 0 2rem;
+    }
+    .tokyo-footer h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .tokyo-footer p {
+      opacity: 0.85;
+      margin-bottom: 1.2rem;
+      font-size: 0.97rem;
+    }
+    .tokyo-social-links {
+      display: flex;
+      justify-content: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .tokyo-social-links a {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: #e74c3c;
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .tokyo-social-links a:hover {
+      transform: translateY(-2px);
+      background: #c0392b;
+    }
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .sidebar {
+        position: static;
+      }
+      .region-tabs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+        padding: 1rem;
+      }
+      .region-btn {
+        text-align: center;
+        margin-bottom: 0;
+      }
+      .tabs-title {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .navbar {
+        padding: 1rem;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .header-title {
+        font-size: 2.5rem;
+      }
+      .tokyo-hero h1 {
+        font-size: 2rem;
+      }
+      .tokyo-features,
+      .tokyo-gallery,
+      .tokyo-footer {
+        margin: 1rem 0;
+        padding: 1.2rem 0.5rem;
+      }
+      .tokyo-gallery-grid,
+      .tokyo-features-grid {
+        grid-template-columns: 1fr;
+      }
+      .content-section {
+        padding: 2rem 1.5rem;
+      }
+    }
+    /* 스크롤 애니메이션 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <!-- 홈 아이콘 (예시: static/images/home.png) -->
-  <a class="home-link" href="scroll_web.html" title="홈으로">
-    <img src="static/images/home.png" alt="홈">
-  </a>
-  <div class="container">
-    <div class="title">일본 도쿄 여행</div>
-    <div class="desc">
-      일본의 수도 도쿄는 전통과 현대가 조화를 이루는 도시입니다.<br>
-      도쿄타워, 아사쿠사, 시부야, 하라주쿠 등 다양한 명소와 맛있는 음식, 쇼핑, 애니메이션 문화를 즐길 수 있습니다.<br>
-      벚꽃이 피는 봄, 불꽃놀이가 펼쳐지는 여름, 단풍이 아름다운 가을, 온천이 매력적인 겨울까지 사계절 내내 다양한 매력을 느낄 수 있습니다.
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">🗾 Discover Japan</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
+        <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
+        <li class="nav-item"><a href="#features" class="nav-link" onclick="focusFeatures(event)">특징</a></li>
+        <li class="nav-item"><a href="#gallery" class="nav-link" onclick="focusGallery(event)">명소</a></li>
+      </ul>
     </div>
-    <div class="img-row">
-      <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=600&q=80" alt="도쿄타워">
-      <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="아사쿠사">
-      <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80" alt="시부야">
+  </nav>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header" id="home">
+      <h1 class="header-title">일본 관광 정보</h1>
+      <p class="header-subtitle">전통과 현대가 만나는 특별한 여행지, 일본을 탐험해보세요</p>
+    </header>
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout" id="regions">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="region-tabs">
+          <h3 class="tabs-title">🌸 여행지 선택</h3>
+          <button class="region-btn active" onclick="showRegion('tokyo')">
+            <span class="region-btn-emoji">🏙️</span>도쿄
+          </button>
+          <button class="region-btn" onclick="showRegion('osaka')">
+            <span class="region-btn-emoji">🏰</span>오사카
+          </button>
+          <button class="region-btn" onclick="showRegion('kyoto')">
+            <span class="region-btn-emoji">⛩️</span>교토
+          </button>
+          <button class="region-btn" onclick="showRegion('sapporo')">
+            <span class="region-btn-emoji">❄️</span>삿포로
+          </button>
+          <button class="region-btn" onclick="showRegion('okinawa')">
+            <span class="region-btn-emoji">🏖️</span>오키나와
+          </button>
+        </div>
+      </aside>
+      <!-- 콘텐츠 영역 -->
+      <section class="content-area">
+        <!-- 도쿄 상세 -->
+        <div class="region-detail active" id="detail-tokyo">
+          <div class="tokyo-hero">
+            <div class="tokyo-hero-content">
+              <h1>도쿄에 오신 것을 환영합니다</h1>
+              <p>전통과 현대가 완벽하게 조화된 세계 최고의 메트로폴리스를 경험해보세요</p>
+              <a href="#tokyo-intro" class="tokyo-cta-button">도쿄 탐험하기</a>
+            </div>
+          </div>
+          <div class="tokyo-intro" id="tokyo-intro">
+            <h2>도쿄, 꿈의 도시</h2>
+            <p>
+              일본의 수도 도쿄는 1,400만 명이 거주하는 세계 최대의 도시 중 하나입니다.
+              수백 년의 역사를 간직한 전통 문화와 최첨단 기술이 공존하는 이곳에서는
+              매일 새로운 발견과 경험이 기다리고 있습니다. 미슐랭 스타 레스토랑부터
+              길거리 음식까지, 고층 빌딩 숲에서 조용한 신사까지, 도쿄는 모든 여행자의
+              꿈을 현실로 만들어주는 특별한 도시입니다.
+            </p>
+          </div>
+          <div class="tokyo-features">
+            <h2>도쿄의 매력</h2>
+            <div class="tokyo-features-grid">
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏮</div>
+                <h3>전통 문화</h3>
+                <p>센소지, 메이지 신궁 등 역사 깊은 사원과 신사에서 일본 전통 문화의 정수를 경험할 수 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🌃</div>
+                <h3>현대적 도시</h3>
+                <p>시부야, 신주쿠의 네온사인과 고층 빌딩들이 만들어내는 환상적인 도시 풍경을 감상하세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🍜</div>
+                <h3>음식 천국</h3>
+                <p>스시, 라멘, 덴푸라부터 미슐랭 요리까지, 세계 최고 수준의 다양한 음식을 맛볼 수 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🚄</div>
+                <h3>편리한 교통</h3>
+                <p>세계에서 가장 정확하고 효율적인 지하철과 JR 시스템으로 도시 곳곳을 편리하게 이동하세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🛍️</div>
+                <h3>쇼핑 천국</h3>
+                <p>긴자의 럭셔리 브랜드부터 하라주쿠의 독특한 패션까지, 모든 취향을 만족시키는 쇼핑 경험을 제공합니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🌸</div>
+                <h3>사계절의 아름다움</h3>
+                <p>벚꽃의 봄, 축제의 여름, 단풍의 가을, 일루미네이션의 겨울까지 사계절 내내 아름다운 풍경을 선사합니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-gallery">
+            <h2>도쿄의 명소들</h2>
+            <div class="tokyo-gallery-grid">
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>도쿄 스카이트리</h3>
+                  <p>634m 높이의 세계 최고 타워</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>센소지 절</h3>
+                  <p>도쿄에서 가장 오래된 불교 사원</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>시부야 교차로</h3>
+                  <p>세계에서 가장 바쁜 교차로</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>우에노 공원</h3>
+                  <p>벚꽃으로 유명한 도심 속 오아시스</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>츠키지 시장</h3>
+                  <p>세계 최대 규모의 수산시장</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>도쿄역</h3>
+                  <p>일본 철도 교통의 중심지</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-footer">
+            <h3>도쿄 여행을 계획해보세요</h3>
+            <p>언제나 새로운 경험과 발견이 기다리는 도쿄에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="tokyo-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 도쿄 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 오사카 -->
+        <div class="region-detail" id="detail-osaka">
+          <div class="tokyo-hero" style="background: linear-gradient(135deg, #ffb347 0%, #ff5e62 100%);">
+            <div class="tokyo-hero-content">
+              <h1>오사카에 오신 것을 환영합니다</h1>
+              <p>미식과 활기가 넘치는 일본의 두 번째 도시, 오사카를 만나보세요</p>
+              <a href="#osaka-intro" class="tokyo-cta-button" style="background:#ff6b6b;">오사카 탐험하기</a>
+            </div>
+          </div>
+          <div class="tokyo-intro" id="osaka-intro">
+            <h2>오사카, 먹거리와 즐거움의 도시</h2>
+            <p>
+              일본 제2의 도시 오사카는 '일본의 부엌'이라 불릴 만큼 다양한 먹거리와 활기찬 분위기로 유명합니다.
+              오사카성, 도톤보리, 유니버설 스튜디오 등 다양한 명소와 함께, 타코야키와 오코노미야키 등 길거리 음식도 꼭 맛보세요.
+            </p>
+          </div>
+          <div class="tokyo-features">
+            <h2>오사카의 매력</h2>
+            <div class="tokyo-features-grid">
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏯</div>
+                <h3>역사와 문화</h3>
+                <p>오사카성, 시텐노지 등 일본의 역사와 문화를 느낄 수 있는 명소가 많습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🍜</div>
+                <h3>미식 천국</h3>
+                <p>타코야키, 오코노미야키, 쿠시카츠 등 오사카만의 다양한 길거리 음식을 즐겨보세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🎢</div>
+                <h3>테마파크</h3>
+                <p>유니버설 스튜디오 재팬(USJ) 등 가족과 함께 즐길 수 있는 테마파크가 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🌃</div>
+                <h3>화려한 야경</h3>
+                <p>도톤보리, 우메다 스카이 빌딩 등 오사카의 밤은 더욱 화려합니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🛍️</div>
+                <h3>쇼핑 명소</h3>
+                <p>신사이바시, 난바 등 다양한 쇼핑 거리에서 즐거운 시간을 보내세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🚄</div>
+                <h3>편리한 교통</h3>
+                <p>신칸센, 지하철 등 일본 전국 어디든 쉽게 이동할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-gallery">
+            <h2>오사카의 명소들</h2>
+            <div class="tokyo-gallery-grid">
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>오사카성</h3>
+                  <p>일본의 역사적 상징, 아름다운 성곽과 공원</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>도톤보리</h3>
+                  <p>네온사인과 먹거리, 오사카의 대표 번화가</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>유니버설 스튜디오 재팬</h3>
+                  <p>가족과 함께 즐기는 테마파크</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>우메다 스카이 빌딩</h3>
+                  <p>오사카 시내를 한눈에 볼 수 있는 전망대</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>신사이바시</h3>
+                  <p>쇼핑과 맛집이 가득한 거리</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>츠텐카쿠</h3>
+                  <p>오사카의 상징적인 전망탑</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-footer">
+            <h3>오사카 여행을 계획해보세요</h3>
+            <p>미식과 즐거움이 가득한 오사카에서 특별한 추억을 만들어보세요.</p>
+            <div class="tokyo-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 오사카 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 교토 -->
+        <div class="region-detail" id="detail-kyoto">
+          <div class="tokyo-hero" style="background: linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%);">
+            <div class="tokyo-hero-content">
+              <h1>교토에 오신 것을 환영합니다</h1>
+              <p>천년의 고도, 일본 전통문화의 심장 교토를 느껴보세요</p>
+              <a href="#kyoto-intro" class="tokyo-cta-button" style="background:#45b7d1;">교토 탐험하기</a>
+            </div>
+          </div>
+          <div class="tokyo-intro" id="kyoto-intro">
+            <h2>교토, 전통의 도시</h2>
+            <p>
+              천년의 수도 교토는 일본 전통문화의 중심지입니다.<br>
+              2,000여 개의 사찰과 신사, 아름다운 정원과 거리, 사계절의 풍경이 어우러진 곳에서 진짜 일본을 경험하세요.
+            </p>
+          </div>
+          <div class="tokyo-features">
+            <h2>교토의 매력</h2>
+            <div class="tokyo-features-grid">
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">⛩️</div>
+                <h3>역사 깊은 신사</h3>
+                <p>후시미이나리, 야사카 신사 등 수많은 신사에서 일본의 전통을 느낄 수 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏯</div>
+                <h3>아름다운 사찰</h3>
+                <p>기요미즈데라, 금각사, 은각사 등 세계적으로 유명한 사찰이 많습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🌸</div>
+                <h3>사계절의 풍경</h3>
+                <p>벚꽃, 단풍, 설경 등 계절마다 다른 아름다움을 만날 수 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">👘</div>
+                <h3>전통 거리</h3>
+                <p>기온, 산넨자카 등 옛 일본의 정취가 살아있는 거리 산책을 즐기세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🍵</div>
+                <h3>다도와 문화</h3>
+                <p>교토만의 전통 다도와 일본 문화 체험이 가능합니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🚄</div>
+                <h3>접근성</h3>
+                <p>신칸센, 버스 등 일본 전국 어디서든 편리하게 방문할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-gallery">
+            <h2>교토의 명소들</h2>
+            <div class="tokyo-gallery-grid">
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>기요미즈데라</h3>
+                  <p>천년의 역사를 간직한 사찰</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>후시미이나리</h3>
+                  <p>천 개의 붉은 도리이</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>금각사</h3>
+                  <p>황금빛으로 빛나는 사찰</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>기온</h3>
+                  <p>전통 거리와 게이샤 문화</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>아라시야마</h3>
+                  <p>대나무 숲과 자연 경관</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>은각사</h3>
+                  <p>고즈넉한 분위기의 사찰</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-footer">
+            <h3>교토 여행을 계획해보세요</h3>
+            <p>전통과 자연이 어우러진 교토에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="tokyo-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 교토 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 삿포로 -->
+        <div class="region-detail" id="detail-sapporo">
+          <div class="tokyo-hero" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
+            <div class="tokyo-hero-content">
+              <h1>삿포로에 오신 것을 환영합니다</h1>
+              <p>눈과 맥주, 자연이 어우러진 홋카이도의 중심 도시 삿포로</p>
+              <a href="#sapporo-intro" class="tokyo-cta-button" style="background:#45b7d1;">삿포로 탐험하기</a>
+            </div>
+          </div>
+          <div class="tokyo-intro" id="sapporo-intro">
+            <h2>삿포로, 북쪽의 매력</h2>
+            <p>
+              홋카이도의 중심 도시 삿포로는 겨울 눈축제와 신선한 해산물, 맥주로 유명합니다.<br>
+              자연과 도시가 조화를 이루는 쾌적한 여행지에서 특별한 추억을 만들어보세요.
+            </p>
+          </div>
+          <div class="tokyo-features">
+            <h2>삿포로의 매력</h2>
+            <div class="tokyo-features-grid">
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">❄️</div>
+                <h3>눈축제</h3>
+                <p>세계적으로 유명한 삿포로 눈축제에서 환상적인 눈 조각을 감상하세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🍺</div>
+                <h3>삿포로 맥주</h3>
+                <p>일본 대표 맥주 브랜드의 본고장에서 신선한 맥주를 맛보세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🦀</div>
+                <h3>해산물</h3>
+                <p>신선한 게, 해산물 요리를 즐길 수 있는 미식의 도시입니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏞️</div>
+                <h3>자연과 공원</h3>
+                <p>오도리 공원, 모이와야마 등 자연과 도시가 어우러진 풍경을 만끽하세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏙️</div>
+                <h3>도시와 문화</h3>
+                <p>삿포로 시계탑, 구 홋카이도청 등 근대와 현대가 공존하는 도시입니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🚄</div>
+                <h3>접근성</h3>
+                <p>비행기, JR 등 일본 전국 어디서든 편리하게 방문할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-gallery">
+            <h2>삿포로의 명소들</h2>
+            <div class="tokyo-gallery-grid">
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>삿포로 시계탑</h3>
+                  <p>삿포로의 상징적인 랜드마크</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>삿포로 눈축제</h3>
+                  <p>겨울의 환상적인 축제</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>오도리 공원</h3>
+                  <p>도심 속 휴식과 축제의 공간</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>모이와야마</h3>
+                  <p>야경이 아름다운 전망대</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>구 홋카이도청</h3>
+                  <p>붉은 벽돌의 근대 건축물</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>삿포로 맥주 박물관</h3>
+                  <p>맥주와 역사를 함께 즐기는 공간</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-footer">
+            <h3>삿포로 여행을 계획해보세요</h3>
+            <p>자연과 미식, 축제가 가득한 삿포로에서 특별한 추억을 만들어보세요.</p>
+            <div class="tokyo-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 삿포로 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+        <!-- 오키나와 -->
+        <div class="region-detail" id="detail-okinawa">
+          <div class="tokyo-hero" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <div class="tokyo-hero-content">
+              <h1>오키나와에 오신 것을 환영합니다</h1>
+              <p>에메랄드빛 바다와 남국의 정취, 일본 최남단의 낙원 오키나와</p>
+              <a href="#okinawa-intro" class="tokyo-cta-button" style="background:#43e97b;">오키나와 탐험하기</a>
+            </div>
+          </div>
+          <div class="tokyo-intro" id="okinawa-intro">
+            <h2>오키나와, 남국의 휴양지</h2>
+            <p>
+              일본 최남단의 섬 오키나와는 아름다운 바다와 온화한 기후, 독특한 류큐 문화로 인기 있는 휴양지입니다.<br>
+              연중 따뜻한 날씨와 다양한 해양 액티비티, 이국적인 풍경을 즐겨보세요.
+            </p>
+          </div>
+          <div class="tokyo-features">
+            <h2>오키나와의 매력</h2>
+            <div class="tokyo-features-grid">
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏝️</div>
+                <h3>아름다운 해변</h3>
+                <p>에메랄드빛 바다와 백사장이 펼쳐진 최고의 휴양지입니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🐠</div>
+                <h3>해양 액티비티</h3>
+                <p>스노클링, 다이빙 등 다양한 해양 스포츠를 즐길 수 있습니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🏰</div>
+                <h3>류큐 왕국의 역사</h3>
+                <p>슈리성 등 오키나와만의 독특한 역사와 문화를 체험하세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🌺</div>
+                <h3>남국의 자연</h3>
+                <p>열대 식물과 아름다운 자연 경관이 가득합니다.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">🍍</div>
+                <h3>이색 먹거리</h3>
+                <p>오키나와 소바, 고야참푸루, 열대과일 등 다양한 현지 음식을 맛보세요.</p>
+              </div>
+              <div class="tokyo-feature-card">
+                <div class="tokyo-feature-icon">✈️</div>
+                <h3>접근성</h3>
+                <p>도쿄, 오사카 등 일본 주요 도시에서 비행기로 쉽게 이동할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-gallery">
+            <h2>오키나와의 명소들</h2>
+            <div class="tokyo-gallery-grid">
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>에메랄드 해변</h3>
+                  <p>투명한 바다와 백사장</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>슈리성</h3>
+                  <p>류큐 왕국의 역사적 유산</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>츄라우미 수족관</h3>
+                  <p>세계 최대급의 대형 수족관</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>고쿠사이 거리</h3>
+                  <p>오키나와의 중심 번화가</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>만좌모</h3>
+                  <p>절벽과 바다가 어우러진 절경</p>
+                </div>
+              </div>
+              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                <div class="tokyo-gallery-item-content">
+                  <h3>나키진성</h3>
+                  <p>세계유산에 등재된 고성</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tokyo-footer">
+            <h3>오키나와 여행을 계획해보세요</h3>
+            <p>아름다운 바다와 남국의 정취가 가득한 오키나와에서 잊지 못할 추억을 만들어보세요.</p>
+            <div class="tokyo-social-links">
+              <a href="#">📷</a>
+              <a href="#">📱</a>
+              <a href="#">✈️</a>
+              <a href="#">📧</a>
+            </div>
+            <p>&copy; 2025 오키나와 관광청. 모든 권리 보유.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <script>
+    function showRegion(region) {
+      // 탭 버튼 활성화
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(region.charAt(0).toUpperCase() + region.slice(1)));
+      });
+      // 상세 정보 페이드
+      document.querySelectorAll('.region-detail').forEach(detail => {
+        detail.classList.remove('active');
+      });
+      document.getElementById('detail-' + region).classList.add('active');
+    }
+    // 페이지 로드시 도쿄가 기본 활성화
+    showRegion('tokyo');
+
+  // 특징 메뉴 클릭 시 현재 활성 지역의 "매력" 파트로 스크롤 (살짝 위로)
+  function focusFeatures(e) {
+    e.preventDefault();
+    const activeRegion = document.querySelector('.region-detail.active');
+    if (!activeRegion) return;
+    const features = activeRegion.querySelector('.tokyo-features');
+    if (features) {
+      // 현재 네비게이션 바 높이 계산
+      const navbar = document.querySelector('.navbar');
+      const navHeight = navbar ? navbar.offsetHeight : 0;
+      // 스크롤 위치 조정 (매력 파트의 top에서 네비게이션 높이 + 여유 20px 만큼 위로)
+      const y = features.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+
+  // 명소 메뉴 클릭 시 현재 활성 지역의 "명소들" 파트로 스크롤 (살짝 위로)
+  function focusGallery(e) {
+    e.preventDefault();
+    const activeRegion = document.querySelector('.region-detail.active');
+    if (!activeRegion) return;
+    const gallery = activeRegion.querySelector('.tokyo-gallery');
+    if (gallery) {
+      const navbar = document.querySelector('.navbar');
+      const navHeight = navbar ? navbar.offsetHeight : 0;
+      const y = gallery.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+</script>
 </body>
 </html>
