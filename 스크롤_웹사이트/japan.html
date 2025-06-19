@@ -498,13 +498,33 @@
       opacity: 1;
       transform: translateY(0);
     }
+    #attraction-detail-row-1,
+    #attraction-detail-row-2 {
+      background: #f8f9fa;
+      border-radius: 14px;
+      margin: 18px 0 18px 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      padding: 32px 24px 24px 24px;
+      transition: all 0.4s cubic-bezier(.4,2,.6,1);
+      animation: slideDown 0.4s;
+      grid-column: 1 / -1;
+    }
+    @keyframes slideDown {
+      from { opacity:0; transform: translateY(-20px);}
+      to { opacity:1; transform: translateY(0);}
+    }
   </style>
 </head>
 <body>
   <!-- 네비게이션 -->
   <nav class="navbar">
     <div class="nav-container">
-      <div class="logo">🗾 Discover Japan</div>
+      <div class="logo">
+        <a href="home.html" title="홈으로 이동" style="text-decoration:none;vertical-align:middle;">
+            <span style="font-size:1.5rem;vertical-align:middle;">🌍</span>
+        </a>
+        <span style="vertical-align:middle;">🗾 Discover Japan</span>
+      </div>
       <ul class="nav-menu">
         <li class="nav-item"><a href="#home" class="nav-link">홈</a></li>
         <li class="nav-item"><a href="#regions" class="nav-link">지역</a></li>
@@ -548,7 +568,7 @@
         <div class="region-detail active" id="detail-tokyo">
           <div class="tokyo-hero">
             <div class="tokyo-hero-content">
-              <h1>도쿄에 오신 것을 환영합니다</h1>
+              <h1>도쿄에 오신 것을 환환합니다</h1>
               <p>전통과 현대가 완벽하게 조화된 세계 최고의 메트로폴리스를 경험해보세요</p>
               <a href="#tokyo-intro" class="tokyo-cta-button">도쿄 탐험하기</a>
             </div>
@@ -600,43 +620,49 @@
           </div>
           <div class="tokyo-gallery">
             <h2>도쿄의 명소들</h2>
-            <div class="tokyo-gallery-grid">
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+            <div class="tokyo-gallery-grid" id="tokyo-gallery-grid">
+              <!-- 1행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(0)">
                 <div class="tokyo-gallery-item-content">
-                  <h3>도쿄 스카이트리</h3>
-                  <p>634m 높이의 세계 최고 타워</p>
+                  <h3>도쿄스카이트리</h3>
+                  <p>634m 높이의 전망대</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(1)">
                 <div class="tokyo-gallery-item-content">
                   <h3>센소지 절</h3>
-                  <p>도쿄에서 가장 오래된 불교 사원</p>
+                  <p>도쿄에서 가장 오래된 사찰</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(2)">
                 <div class="tokyo-gallery-item-content">
                   <h3>시부야 교차로</h3>
-                  <p>세계에서 가장 바쁜 교차로</p>
+                  <p>세계에서 가장 붐비는 횡단보도</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+              <!-- 1행 상세 설명 위치 -->
+              <div id="attraction-detail-row-1" style="display:none;grid-column:1/-1;padding:0;"></div>
+              <!-- 2행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(3)">
                 <div class="tokyo-gallery-item-content">
                   <h3>우에노 공원</h3>
-                  <p>벚꽃으로 유명한 도심 속 오아시스</p>
+                  <p>벚꽃 명소와 동물원</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(4)">
                 <div class="tokyo-gallery-item-content">
                   <h3>츠키지 시장</h3>
-                  <p>세계 최대 규모의 수산시장</p>
+                  <p>신선한 해산물과 스시</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetail(5)">
                 <div class="tokyo-gallery-item-content">
                   <h3>도쿄역</h3>
-                  <p>일본 철도 교통의 중심지</p>
+                  <p>역사적인 붉은 벽돌 건물</p>
                 </div>
               </div>
+              <!-- 2행 상세 설명 위치 -->
+              <div id="attraction-detail-row-2" style="display:none;grid-column:1/-1;padding:0;"></div>
             </div>
           </div>
           <div class="tokyo-footer">
@@ -655,7 +681,7 @@
         <div class="region-detail" id="detail-osaka">
           <div class="tokyo-hero" style="background: linear-gradient(135deg, #ffb347 0%, #ff5e62 100%);">
             <div class="tokyo-hero-content">
-              <h1>오사카에 오신 것을 환영합니다</h1>
+              <h1>오사카에 오신 것을 환환합니다</h1>
               <p>미식과 활기가 넘치는 일본의 두 번째 도시, 오사카를 만나보세요</p>
               <a href="#osaka-intro" class="tokyo-cta-button" style="background:#ff6b6b;">오사카 탐험하기</a>
             </div>
@@ -704,43 +730,49 @@
           </div>
           <div class="tokyo-gallery">
             <h2>오사카의 명소들</h2>
-            <div class="tokyo-gallery-grid">
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+            <div class="tokyo-gallery-grid" id="osaka-gallery-grid">
+              <!-- 1행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(0)">
                 <div class="tokyo-gallery-item-content">
                   <h3>오사카성</h3>
-                  <p>일본의 역사적 상징, 아름다운 성곽과 공원</p>
+                  <p>일본의 역사적 상징</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(1)">
                 <div class="tokyo-gallery-item-content">
                   <h3>도톤보리</h3>
-                  <p>네온사인과 먹거리, 오사카의 대표 번화가</p>
+                  <p>네온사인과 먹거리</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(2)">
                 <div class="tokyo-gallery-item-content">
                   <h3>유니버설 스튜디오 재팬</h3>
-                  <p>가족과 함께 즐기는 테마파크</p>
+                  <p>가족 테마파크</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+              <!-- 1행 상세 설명 위치 -->
+              <div id="osaka-attraction-detail-row-1" style="display:none;grid-column:1/-1;padding:0;"></div>
+              <!-- 2행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(3)">
                 <div class="tokyo-gallery-item-content">
                   <h3>우메다 스카이 빌딩</h3>
-                  <p>오사카 시내를 한눈에 볼 수 있는 전망대</p>
+                  <p>전망대</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(4)">
                 <div class="tokyo-gallery-item-content">
                   <h3>신사이바시</h3>
-                  <p>쇼핑과 맛집이 가득한 거리</p>
+                  <p>쇼핑 거리</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOsaka(5)">
                 <div class="tokyo-gallery-item-content">
                   <h3>츠텐카쿠</h3>
-                  <p>오사카의 상징적인 전망탑</p>
+                  <p>상징적 전망탑</p>
                 </div>
               </div>
+              <!-- 2행 상세 설명 위치 -->
+              <div id="osaka-attraction-detail-row-2" style="display:none;grid-column:1/-1;padding:0;"></div>
             </div>
           </div>
           <div class="tokyo-footer">
@@ -759,7 +791,7 @@
         <div class="region-detail" id="detail-kyoto">
           <div class="tokyo-hero" style="background: linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%);">
             <div class="tokyo-hero-content">
-              <h1>교토에 오신 것을 환영합니다</h1>
+              <h1>교토에 오신 것을 환환합니다</h1>
               <p>천년의 고도, 일본 전통문화의 심장 교토를 느껴보세요</p>
               <a href="#kyoto-intro" class="tokyo-cta-button" style="background:#45b7d1;">교토 탐험하기</a>
             </div>
@@ -808,43 +840,49 @@
           </div>
           <div class="tokyo-gallery">
             <h2>교토의 명소들</h2>
-            <div class="tokyo-gallery-grid">
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+            <div class="tokyo-gallery-grid" id="kyoto-gallery-grid">
+              <!-- 1행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(0)">
                 <div class="tokyo-gallery-item-content">
                   <h3>기요미즈데라</h3>
                   <p>천년의 역사를 간직한 사찰</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(1)">
                 <div class="tokyo-gallery-item-content">
                   <h3>후시미이나리</h3>
                   <p>천 개의 붉은 도리이</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(2)">
                 <div class="tokyo-gallery-item-content">
                   <h3>금각사</h3>
                   <p>황금빛으로 빛나는 사찰</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+              <!-- 1행 상세 설명 위치 -->
+              <div id="kyoto-attraction-detail-row-1" style="display:none;grid-column:1/-1;padding:0;"></div>
+              <!-- 2행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(3)">
                 <div class="tokyo-gallery-item-content">
                   <h3>기온</h3>
                   <p>전통 거리와 게이샤 문화</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(4)">
                 <div class="tokyo-gallery-item-content">
                   <h3>아라시야마</h3>
                   <p>대나무 숲과 자연 경관</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailKyoto(5)">
                 <div class="tokyo-gallery-item-content">
                   <h3>은각사</h3>
                   <p>고즈넉한 분위기의 사찰</p>
                 </div>
               </div>
+              <!-- 2행 상세 설명 위치 -->
+              <div id="kyoto-attraction-detail-row-2" style="display:none;grid-column:1/-1;padding:0;"></div>
             </div>
           </div>
           <div class="tokyo-footer">
@@ -863,7 +901,7 @@
         <div class="region-detail" id="detail-sapporo">
           <div class="tokyo-hero" style="background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);">
             <div class="tokyo-hero-content">
-              <h1>삿포로에 오신 것을 환영합니다</h1>
+              <h1>삿포로에 오신 것을 환환합니다</h1>
               <p>눈과 맥주, 자연이 어우러진 홋카이도의 중심 도시 삿포로</p>
               <a href="#sapporo-intro" class="tokyo-cta-button" style="background:#45b7d1;">삿포로 탐험하기</a>
             </div>
@@ -912,43 +950,49 @@
           </div>
           <div class="tokyo-gallery">
             <h2>삿포로의 명소들</h2>
-            <div class="tokyo-gallery-grid">
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+            <div class="tokyo-gallery-grid" id="sapporo-gallery-grid">
+              <!-- 1행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(0)">
                 <div class="tokyo-gallery-item-content">
                   <h3>삿포로 시계탑</h3>
                   <p>삿포로의 상징적인 랜드마크</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(1)">
                 <div class="tokyo-gallery-item-content">
                   <h3>삿포로 눈축제</h3>
                   <p>겨울의 환상적인 축제</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(2)">
                 <div class="tokyo-gallery-item-content">
                   <h3>오도리 공원</h3>
                   <p>도심 속 휴식과 축제의 공간</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+              <!-- 1행 상세 설명 위치 -->
+              <div id="sapporo-attraction-detail-row-1" style="display:none;grid-column:1/-1;padding:0;"></div>
+              <!-- 2행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(3)">
                 <div class="tokyo-gallery-item-content">
                   <h3>모이와야마</h3>
                   <p>야경이 아름다운 전망대</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(4)">
                 <div class="tokyo-gallery-item-content">
                   <h3>구 홋카이도청</h3>
                   <p>붉은 벽돌의 근대 건축물</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailSapporo(5)">
                 <div class="tokyo-gallery-item-content">
                   <h3>삿포로 맥주 박물관</h3>
                   <p>맥주와 역사를 함께 즐기는 공간</p>
                 </div>
               </div>
+              <!-- 2행 상세 설명 위치 -->
+              <div id="sapporo-attraction-detail-row-2" style="display:none;grid-column:1/-1;padding:0;"></div>
             </div>
           </div>
           <div class="tokyo-footer">
@@ -967,7 +1011,7 @@
         <div class="region-detail" id="detail-okinawa">
           <div class="tokyo-hero" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
             <div class="tokyo-hero-content">
-              <h1>오키나와에 오신 것을 환영합니다</h1>
+              <h1>오키나와에 오신 것을 환환합니다</h1>
               <p>에메랄드빛 바다와 남국의 정취, 일본 최남단의 낙원 오키나와</p>
               <a href="#okinawa-intro" class="tokyo-cta-button" style="background:#43e97b;">오키나와 탐험하기</a>
             </div>
@@ -1016,43 +1060,49 @@
           </div>
           <div class="tokyo-gallery">
             <h2>오키나와의 명소들</h2>
-            <div class="tokyo-gallery-grid">
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80');">
+            <div class="tokyo-gallery-grid" id="okinawa-gallery-grid">
+              <!-- 1행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(0)">
                 <div class="tokyo-gallery-item-content">
                   <h3>에메랄드 해변</h3>
                   <p>투명한 바다와 백사장</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(1)">
                 <div class="tokyo-gallery-item-content">
                   <h3>슈리성</h3>
                   <p>류큐 왕국의 역사적 유산</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(2)">
                 <div class="tokyo-gallery-item-content">
                   <h3>츄라우미 수족관</h3>
                   <p>세계 최대급의 대형 수족관</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80');">
+              <!-- 1행 상세 설명 위치 -->
+              <div id="okinawa-attraction-detail-row-1" style="display:none;grid-column:1/-1;padding:0;"></div>
+              <!-- 2행 -->
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(3)">
                 <div class="tokyo-gallery-item-content">
                   <h3>고쿠사이 거리</h3>
                   <p>오키나와의 중심 번화가</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(4)">
                 <div class="tokyo-gallery-item-content">
                   <h3>만좌모</h3>
                   <p>절벽과 바다가 어우러진 절경</p>
                 </div>
               </div>
-              <div class="tokyo-gallery-item" style="background-image:url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+              <div class="tokyo-gallery-item" onclick="toggleAttractionDetailOkinawa(5)">
                 <div class="tokyo-gallery-item-content">
                   <h3>나키진성</h3>
                   <p>세계유산에 등재된 고성</p>
                 </div>
               </div>
+              <!-- 2행 상세 설명 위치 -->
+              <div id="okinawa-attraction-detail-row-2" style="display:none;grid-column:1/-1;padding:0;"></div>
             </div>
           </div>
           <div class="tokyo-footer">
@@ -1114,6 +1164,528 @@
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
   }
+
+  // 명소별 상세 정보 데이터
+const tokyoAttractions = [
+  {
+    title: "도쿄스카이트리",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Tokyo_Skytree_2014_%28cropped%29.jpg",
+    desc: "634m 높이의 세계에서 두 번째로 높은 타워. 전망대에서 도쿄 시내와 후지산까지 조망 가능.",
+    time: "약 2~3시간 소요",
+    fee: "전망대 입장료: 성인 2,100엔~3,100엔",
+    tip: "야경이 특히 아름답고, 4층에는 쇼핑몰과 레스토랑도 있음."
+  },
+  {
+    title: "센소지 절",
+    image: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Sensoji_Temple%2C_Tokyo%2C_Japan.jpg",
+    desc: "도쿄에서 가장 오래된 사찰로, 거대한 붉은 등롱이 인상적. 아사쿠사 지역의 상징.",
+    time: "약 1~1.5시간 소요",
+    fee: "입장 무료",
+    tip: "나카미세 거리에서 다양한 기념품과 간식도 즐길 수 있음."
+  },
+  {
+    title: "시부야 교차로",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Shibuya_Crossing%2C_Tokyo%2C_Japan.jpg",
+    desc: "세계에서 가장 붐비는 횡단보도. 수많은 인파와 네온사인이 어우러진 도쿄의 상징.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "스타벅스 2층에서 교차로를 내려다보는 뷰가 인기."
+  },
+  {
+    title: "우에노 공원",
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Ueno_Park_Sakura.JPG",
+    desc: "벚꽃 명소로 유명하며, 동물원과 박물관이 위치한 도쿄의 대표 공원.",
+    time: "약 2시간 소요",
+    fee: "공원 무료, 동물원 600엔",
+    tip: "봄철 벚꽃 시즌에 방문 추천."
+  },
+  {
+    title: "츠키지 시장",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Tsukiji_Fish_Market_-_panoramio.jpg",
+    desc: "신선한 해산물과 다양한 먹거리를 즐길 수 있는 도쿄의 대표 시장.",
+    time: "약 1~2시간 소요",
+    fee: "입장 무료, 식사 별도",
+    tip: "아침 일찍 방문하면 활기찬 경매 현장도 볼 수 있음."
+  },
+  {
+    title: "도쿄역",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Tokyo_Station_2012.jpg",
+    desc: "역사적인 붉은 벽돌 건물과 현대적인 상업시설이 어우러진 도쿄의 관문.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "야경과 조명, 역내 쇼핑몰도 인기."
+  }
+];
+
+let openedAttraction = null; // 현재 열린 상세 정보 인덱스
+let openedRow = null;        // 1 또는 2
+
+function toggleAttractionDetail(idx) {
+  const detailRow1 = document.getElementById('attraction-detail-row-1');
+  const detailRow2 = document.getElementById('attraction-detail-row-2');
+
+  // 1행(0,1,2), 2행(3,4,5)
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (openedRow && ((isFirstRow && openedRow === 2) || (!isFirstRow && openedRow === 1))) {
+    if (openedRow === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    openedAttraction = null;
+    openedRow = null;
+  }
+
+  // 이미 열려있는 경우 닫기
+  if (openedAttraction === idx) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    openedAttraction = null;
+    openedRow = null;
+    return;
+  }
+
+  // 상세 정보 표시
+  const data = tokyoAttractions[idx];
+  detailRow.innerHTML = `
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin-top:0;">${data.title}</h3>
+        <p style="margin:0 0 10px 0;">${data.desc}</p>
+        <ul style="padding-left:18px;margin:0 0 10px 0;">
+          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
+          <li><strong>입장료/비용:</strong> ${data.fee}</li>
+        </ul>
+        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
+      </div>
+    </div>
+  `;
+  detailRow.style.display = "block";
+  openedAttraction = idx;
+  openedRow = isFirstRow ? 1 : 2;
+}
+
+// 오사카 명소 상세 데이터
+const osakaAttractions = [
+  {
+    title: "오사카성",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Osaka_Castle_02bs3200.jpg",
+    desc: "도요토미 히데요시가 세운 일본의 대표 성. 벚꽃 명소로도 유명.",
+    time: "약 1~2시간 소요",
+    fee: "입장료: 성인 600엔",
+    tip: "전망대에서 오사카 시내를 한눈에 볼 수 있음."
+  },
+  {
+    title: "도톤보리",
+    image: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Dotonbori%2C_Osaka%2C_Japan.jpg",
+    desc: "네온사인과 다양한 먹거리, 오사카의 대표 번화가.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "글리코 사인 앞에서 인증샷 필수!"
+  },
+  {
+    title: "유니버설 스튜디오 재팬",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Universal_Studios_Japan_entrance.jpg",
+    desc: "할리우드 영화 테마파크. 다양한 어트랙션과 퍼레이드.",
+    time: "하루 종일",
+    fee: "입장료: 성인 8,600엔~",
+    tip: "인기 어트랙션은 익스프레스 패스 추천."
+  },
+  {
+    title: "우메다 스카이 빌딩",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Umeda_Sky_Building_2016.jpg",
+    desc: "오사카 시내를 360도 전망할 수 있는 빌딩.",
+    time: "약 1시간 소요",
+    fee: "입장료: 성인 1,500엔",
+    tip: "야경이 특히 아름다움."
+  },
+  {
+    title: "신사이바시",
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Shinsaibashi_Suji.jpg",
+    desc: "쇼핑과 맛집이 가득한 오사카의 대표 거리.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "오사카 기념품 쇼핑 명소."
+  },
+  {
+    title: "츠텐카쿠",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Tsutenkaku_Tower_2015.jpg",
+    desc: "오사카의 상징적인 전망탑.",
+    time: "약 30분~1시간 소요",
+    fee: "입장료: 성인 900엔",
+    tip: "빌리켄 신사 방문도 추천."
+  }
+];
+
+let openedAttractionOsaka = null;
+let openedRowOsaka = null;
+
+function toggleAttractionDetailOsaka(idx) {
+  const detailRow1 = document.getElementById('osaka-attraction-detail-row-1');
+  const detailRow2 = document.getElementById('osaka-attraction-detail-row-2');
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (openedRowOsaka && ((isFirstRow && openedRowOsaka === 2) || (!isFirstRow && openedRowOsaka === 1))) {
+    if (openedRowOsaka === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    openedAttractionOsaka = null;
+    openedRowOsaka = null;
+  }
+
+  // 이미 열려있는 경우 닫기
+  if (openedAttractionOsaka === idx) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    openedAttractionOsaka = null;
+    openedRowOsaka = null;
+    return;
+  }
+
+  // 상세 정보 표시
+  const data = osakaAttractions[idx];
+  detailRow.innerHTML = `
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin-top:0;">${data.title}</h3>
+        <p style="margin:0 0 10px 0;">${data.desc}</p>
+        <ul style="padding-left:18px;margin:0 0 10px 0;">
+          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
+          <li><strong>입장료/비용:</strong> ${data.fee}</li>
+        </ul>
+        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
+      </div>
+    </div>
+  `;
+  detailRow.style.display = "block";
+  openedAttractionOsaka = idx;
+  openedRowOsaka = isFirstRow ? 1 : 2;
+}
+
+// 교토 명소 상세 데이터
+const kyotoAttractions = [
+  {
+    title: "기요미즈데라",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Kiyomizu-dera_in_Kyoto%2C_Japan.jpg",
+    desc: "778년에 창건된 교토의 대표 사찰. 나무로 지어진 본당과 전망대에서 교토 시내를 한눈에 볼 수 있습니다.",
+    time: "약 1~1.5시간 소요",
+    fee: "입장료: 성인 400엔",
+    tip: "봄 벚꽃, 가을 단풍 시즌에 특히 아름답습니다."
+  },
+  {
+    title: "후시미이나리",
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Fushimi_Inari_Taisha_torii.jpg",
+    desc: "수천 개의 붉은 도리이(신사문)가 이어진 신사. 일본 전국 이나리 신사의 총본산.",
+    time: "약 1~2시간 소요",
+    fee: "입장 무료",
+    tip: "도리이 터널을 따라 산책하며 사진 찍기 좋은 명소입니다."
+  },
+  {
+    title: "금각사",
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Kinkaku-ji_the_Golden_Pavilion_in_Kyoto_Japan.jpg",
+    desc: "정식 명칭은 로쿠온지. 황금으로 덮인 3층 누각이 연못에 비치는 풍경이 유명합니다.",
+    time: "약 1시간 소요",
+    fee: "입장료: 성인 500엔",
+    tip: "아침 일찍 방문하면 한적하게 감상할 수 있습니다."
+  },
+  {
+    title: "기온",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Gion_Kyoto.jpg",
+    desc: "전통적인 거리와 게이샤 문화를 체험할 수 있는 교토의 대표 번화가.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "저녁 시간대에 게이샤와 마이코를 만날 수 있습니다."
+  },
+  {
+    title: "아라시야마",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Arashiyama_Bamboo_Grove%2C_Kyoto%2C_Japan.jpg",
+    desc: "대나무 숲과 도게츠교, 자연 경관이 아름다운 교토 서쪽의 명소.",
+    time: "약 2~3시간 소요",
+    fee: "대나무숲 무료, 일부 사찰 유료",
+    tip: "인력거 체험과 강변 산책도 추천합니다."
+  },
+  {
+    title: "은각사",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Ginkaku-ji_Kyoto_Japan.jpg",
+    desc: "정식 명칭은 지쇼지. 소박하고 고즈넉한 분위기의 사찰과 정원이 인상적입니다.",
+    time: "약 1시간 소요",
+    fee: "입장료: 성인 500엔",
+    tip: "철학의 길 산책과 함께 방문하면 좋습니다."
+  }
+];
+
+let openedAttractionKyoto = null;
+let openedRowKyoto = null;
+
+function toggleAttractionDetailKyoto(idx) {
+  const detailRow1 = document.getElementById('kyoto-attraction-detail-row-1');
+  const detailRow2 = document.getElementById('kyoto-attraction-detail-row-2');
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (openedRowKyoto && ((isFirstRow && openedRowKyoto === 2) || (!isFirstRow && openedRowKyoto === 1))) {
+    if (openedRowKyoto === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    openedAttractionKyoto = null;
+    openedRowKyoto = null;
+  }
+
+  // 이미 열려있는 경우 닫기
+  if (openedAttractionKyoto === idx) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    openedAttractionKyoto = null;
+    openedRowKyoto = null;
+    return;
+  }
+
+  // 상세 정보 표시
+  const data = kyotoAttractions[idx];
+  detailRow.innerHTML = `
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin-top:0;">${data.title}</h3>
+               <p style="margin:0 0 10px 0;">${data.desc}</p>
+        <ul style="padding-left:18px;margin:0 0 10px 0;">
+          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
+                   <li><strong>입장료/비용:</strong> ${data.fee}</li>
+        </ul>
+        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
+      </div>
+    </div>
+  `;
+  detailRow.style.display = "block";
+  openedAttractionKyoto = idx;
+  openedRowKyoto = isFirstRow ? 1 : 2;
+}
+
+// 삿포로 명소 상세 데이터
+const sapporoAttractions = [
+  {
+    title: "삿포로 시계탑",
+    image: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Sapporo_Clock_Tower_2012.jpg",
+    desc: "1878년에 세워진 삿포로의 대표적인 랜드마크. 홋카이도 개척의 상징입니다.",
+    time: "약 30분~1시간 소요",
+    fee: "입장료: 성인 200엔",
+    tip: "야간 조명도 아름답습니다."
+  },
+  {
+    title: "삿포로 눈축제",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Sapporo_Snow_Festival_2011.jpg",
+    desc: "매년 2월 오도리 공원 등에서 열리는 세계적인 눈 조각 축제.",
+    time: "관람 자유(축제 기간 중)",
+    fee: "무료",
+    tip: "밤에 조명이 켜진 눈 조각을 감상해보세요."
+  },
+  {
+    title: "오도리 공원",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Odori_Park_Sapporo.jpg",
+    desc: "삿포로 중심에 위치한 1.5km 길이의 공원. 계절마다 다양한 이벤트가 열립니다.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "여름에는 맥주 축제, 겨울에는 눈축제가 열립니다."
+  },
+  {
+    title: "모이와야마",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Mount_Moiwa_Sapporo.jpg",
+    desc: "로프웨이로 오를 수 있는 전망대. 삿포로 시내와 이시카리만의 야경이 일품입니다.",
+    time: "약 1~2시간 소요",
+    fee: "로프웨이 왕복 1,800엔",
+    tip: "일몰 시간대 방문 추천."
+  },
+  {
+    title: "구 홋카이도청",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Former_Hokkaido_Government_Office_Building.jpg",
+    desc: "붉은 벽돌로 지어진 근대 건축물. 홋카이도의 역사를 느낄 수 있습니다.",
+    time: "약 30분~1시간 소요",
+    fee: "입장 무료",
+    tip: "봄에는 주변 정원에 꽃이 만발합니다."
+  },
+  {
+    title: "삿포로 맥주 박물관",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Sapporo_Beer_Museum_2012.jpg",
+    desc: "일본 최초의 맥주 브랜드 '삿포로'의 역사를 소개하는 박물관.",
+    time: "약 1시간 소요",
+    fee: "입장 무료, 시음 별도",
+    tip: "시음 코너에서 신선한 맥주를 맛보세요."
+  }
+];
+
+let openedAttractionSapporo = null;
+let openedRowSapporo = null;
+
+function toggleAttractionDetailSapporo(idx) {
+  const detailRow1 = document.getElementById('sapporo-attraction-detail-row-1');
+  const detailRow2 = document.getElementById('sapporo-attraction-detail-row-2');
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (openedRowSapporo && ((isFirstRow && openedRowSapporo === 2) || (!isFirstRow && openedRowSapporo === 1))) {
+    if (openedRowSapporo === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    openedAttractionSapporo = null;
+    openedRowSapporo = null;
+  }
+
+  // 이미 열려있는 경우 닫기
+  if (openedAttractionSapporo === idx) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    openedAttractionSapporo = null;
+    openedRowSapporo = null;
+    return;
+  }
+
+  // 상세 정보 표시
+  const data = sapporoAttractions[idx];
+  detailRow.innerHTML = `
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin-top:0;">${data.title}</h3>
+        <p style="margin:0 0 10px 0;">${data.desc}</p>
+        <ul style="padding-left:18px;margin:0 0 10px 0;">
+          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
+          <li><strong>입장료/비용:</strong> ${data.fee}</li>
+        </ul>
+        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
+      </div>
+    </div>
+  `;
+  detailRow.style.display = "block";
+  openedAttractionSapporo = idx;
+  openedRowSapporo = isFirstRow ? 1 : 2;
+}
+
+// 오키나와 명소 상세 데이터
+const okinawaAttractions = [
+  {
+    title: "에메랄드 해변",
+    image: "https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80",
+    desc: "오키나와 북부에 위치한 투명한 바다와 고운 백사장이 펼쳐진 인기 해변.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "여름철에는 해수욕과 스노클링을 즐길 수 있습니다."
+  },
+  {
+    title: "슈리성",
+    image: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=600&q=80",
+    desc: "류큐 왕국의 중심이었던 성. 오키나와의 역사와 문화를 대표하는 세계유산.",
+    time: "약 1~2시간 소요",
+    fee: "입장료: 성인 400엔",
+    tip: "야간 라이트업도 아름답습니다."
+  },
+  {
+    title: "츄라우미 수족관",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    desc: "세계 최대급의 대형 수족관. 거대한 고래상어와 다양한 해양생물을 만날 수 있습니다.",
+    time: "약 2~3시간 소요",
+    fee: "입장료: 성인 2,180엔",
+    tip: "오픈 시간에 맞춰 방문하면 한적하게 관람할 수 있습니다."
+  },
+  {
+    title: "고쿠사이 거리",
+    image: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80",
+    desc: "오키나와의 중심 번화가로, 쇼핑과 먹거리가 가득한 거리.",
+    time: "관람 자유",
+    fee: "무료",
+    tip: "오키나와 전통 기념품과 먹거리를 꼭 맛보세요."
+  },
+  {
+    title: "만좌모",
+    image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+    desc: "코끼리 바위로 유명한 절벽과 푸른 바다가 어우러진 오키나와 대표 절경.",
+    time: "약 30분~1시간 소요",
+    fee: "입장료: 성인 100엔",
+    tip: "일몰 시간대 방문 추천."
+  },
+  {
+    title: "나키진성",
+    image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80",
+    desc: "세계유산에 등재된 류큐 왕국의 고성. 벚꽃 시즌에 특히 아름답습니다.",
+    time: "약 1시간 소요",
+    fee: "입장료: 성인 400엔",
+    tip: "봄철 벚꽃과 함께 고성 산책을 즐겨보세요."
+  }
+];
+
+let openedAttractionOkinawa = null;
+let openedRowOkinawa = null;
+
+function toggleAttractionDetailOkinawa(idx) {
+  const detailRow1 = document.getElementById('okinawa-attraction-detail-row-1');
+  const detailRow2 = document.getElementById('okinawa-attraction-detail-row-2');
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (openedRowOkinawa && ((isFirstRow && openedRowOkinawa === 2) || (!isFirstRow && openedRowOkinawa === 1))) {
+    if (openedRowOkinawa === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    openedAttractionOkinawa = null;
+    openedRowOkinawa = null;
+  }
+
+  // 이미 열려있는 경우 닫기
+  if (openedAttractionOkinawa === idx) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    openedAttractionOkinawa = null;
+    openedRowOkinawa = null;
+    return;
+  }
+
+  // 상세 정보 표시
+  const data = okinawaAttractions[idx];
+  detailRow.innerHTML = `
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
+      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <div style="flex:1;min-width:200px;">
+        <h3 style="margin-top:0;">${data.title}</h3>
+        <p style="margin:0 0 10px 0;">${data.desc}</p>
+        <ul style="padding-left:18px;margin:0 0 10px 0;">
+          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
+          <li><strong>입장료/비용:</strong> ${data.fee}</li>
+        </ul>
+        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
+      </div>
+    </div>
+  `;
+  detailRow.style.display = "block";
+  openedAttractionOkinawa = idx;
+  openedRowOkinawa = isFirstRow ? 1 : 2;
+}
 </script>
 </body>
 </html>
