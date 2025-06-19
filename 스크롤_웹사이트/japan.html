@@ -1169,7 +1169,7 @@
 const tokyoAttractions = [
   {
     title: "도쿄스카이트리",
-    image: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Tokyo_Skytree_2014_%28cropped%29.jpg",
+    image: "https://plus.unsplash.com/premium_photo-1722795256346-446f8f846b9e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     desc: "634m 높이의 세계에서 두 번째로 높은 타워. 전망대에서 도쿄 시내와 후지산까지 조망 가능.",
     time: "약 2~3시간 소요",
     fee: "전망대 입장료: 성인 2,100엔~3,100엔",
@@ -1177,7 +1177,7 @@ const tokyoAttractions = [
   },
   {
     title: "센소지 절",
-    image: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Sensoji_Temple%2C_Tokyo%2C_Japan.jpg",
+    image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
     desc: "도쿄에서 가장 오래된 사찰로, 거대한 붉은 등롱이 인상적. 아사쿠사 지역의 상징.",
     time: "약 1~1.5시간 소요",
     fee: "입장 무료",
@@ -1185,7 +1185,7 @@ const tokyoAttractions = [
   },
   {
     title: "시부야 교차로",
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Shibuya_Crossing%2C_Tokyo%2C_Japan.jpg",
+    image: "https://images.unsplash.com/photo-1513407030348-c983a97b98d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
     desc: "세계에서 가장 붐비는 횡단보도. 수많은 인파와 네온사인이 어우러진 도쿄의 상징.",
     time: "관람 자유",
     fee: "무료",
@@ -1193,7 +1193,7 @@ const tokyoAttractions = [
   },
   {
     title: "우에노 공원",
-    image: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Ueno_Park_Sakura.JPG",
+    image: "https://images.unsplash.com/photo-1522383225653-ed111181a951?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80",
     desc: "벚꽃 명소로 유명하며, 동물원과 박물관이 위치한 도쿄의 대표 공원.",
     time: "약 2시간 소요",
     fee: "공원 무료, 동물원 600엔",
@@ -1201,7 +1201,7 @@ const tokyoAttractions = [
   },
   {
     title: "츠키지 시장",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Tsukiji_Fish_Market_-_panoramio.jpg",
+    image: "https://images.unsplash.com/photo-1665846642221-fdb1a793c7f5?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     desc: "신선한 해산물과 다양한 먹거리를 즐길 수 있는 도쿄의 대표 시장.",
     time: "약 1~2시간 소요",
     fee: "입장 무료, 식사 별도",
@@ -1209,7 +1209,7 @@ const tokyoAttractions = [
   },
   {
     title: "도쿄역",
-    image: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Tokyo_Station_2012.jpg",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2194&q=80",
     desc: "역사적인 붉은 벽돌 건물과 현대적인 상업시설이 어우러진 도쿄의 관문.",
     time: "관람 자유",
     fee: "무료",
@@ -1217,74 +1217,21 @@ const tokyoAttractions = [
   }
 ];
 
-let openedAttraction = null; // 현재 열린 상세 정보 인덱스
-let openedRow = null;        // 1 또는 2
 
-function toggleAttractionDetail(idx) {
-  const detailRow1 = document.getElementById('attraction-detail-row-1');
-  const detailRow2 = document.getElementById('attraction-detail-row-2');
 
-  // 1행(0,1,2), 2행(3,4,5)
-  const isFirstRow = idx <= 2;
-  const detailRow = isFirstRow ? detailRow1 : detailRow2;
-
-  // 다른 행의 상세가 열려있으면 닫기
-  if (openedRow && ((isFirstRow && openedRow === 2) || (!isFirstRow && openedRow === 1))) {
-    if (openedRow === 1) {
-      detailRow1.style.display = "none";
-      detailRow1.innerHTML = "";
-    } else {
-      detailRow2.style.display = "none";
-      detailRow2.innerHTML = "";
-    }
-    openedAttraction = null;
-    openedRow = null;
-  }
-
-  // 이미 열려있는 경우 닫기
-  if (openedAttraction === idx) {
-    detailRow.style.display = "none";
-    detailRow.innerHTML = "";
-    openedAttraction = null;
-    openedRow = null;
-    return;
-  }
-
-  // 상세 정보 표시
-  const data = tokyoAttractions[idx];
-  detailRow.innerHTML = `
-    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
-      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="flex:1;min-width:200px;">
-        <h3 style="margin-top:0;">${data.title}</h3>
-        <p style="margin:0 0 10px 0;">${data.desc}</p>
-        <ul style="padding-left:18px;margin:0 0 10px 0;">
-          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
-          <li><strong>입장료/비용:</strong> ${data.fee}</li>
-        </ul>
-        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
-      </div>
-    </div>
-  `;
-  detailRow.style.display = "block";
-  openedAttraction = idx;
-  openedRow = isFirstRow ? 1 : 2;
-}
-
-// 오사카 명소 상세 데이터
 const osakaAttractions = [
   {
     title: "오사카성",
     image: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Osaka_Castle_02bs3200.jpg",
-    desc: "도요토미 히데요시가 세운 일본의 대표 성. 벚꽃 명소로도 유명.",
+    desc: "도요토미 히데요시가 세운 일본의 대표 성. 벚꽃 명소로도 유명합니다.",
     time: "약 1~2시간 소요",
     fee: "입장료: 성인 600엔",
-    tip: "전망대에서 오사카 시내를 한눈에 볼 수 있음."
+    tip: "전망대에서 오사카 시내를 한눈에 볼 수 있습니다."
   },
   {
     title: "도톤보리",
     image: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Dotonbori%2C_Osaka%2C_Japan.jpg",
-    desc: "네온사인과 다양한 먹거리, 오사카의 대표 번화가.",
+    desc: "네온사인과 다양한 먹거리, 오사카의 대표 번화가입니다.",
     time: "관람 자유",
     fee: "무료",
     tip: "글리코 사인 앞에서 인증샷 필수!"
@@ -1292,7 +1239,7 @@ const osakaAttractions = [
   {
     title: "유니버설 스튜디오 재팬",
     image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Universal_Studios_Japan_entrance.jpg",
-    desc: "할리우드 영화 테마파크. 다양한 어트랙션과 퍼레이드.",
+    desc: "할리우드 영화 테마파크. 다양한 어트랙션과 퍼레이드를 즐길 수 있습니다.",
     time: "하루 종일",
     fee: "입장료: 성인 8,600엔~",
     tip: "인기 어트랙션은 익스프레스 패스 추천."
@@ -1300,82 +1247,30 @@ const osakaAttractions = [
   {
     title: "우메다 스카이 빌딩",
     image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Umeda_Sky_Building_2016.jpg",
-    desc: "오사카 시내를 360도 전망할 수 있는 빌딩.",
+    desc: "오사카 시내를 360도 전망할 수 있는 빌딩입니다.",
     time: "약 1시간 소요",
     fee: "입장료: 성인 1,500엔",
-    tip: "야경이 특히 아름다움."
+    tip: "야경이 특히 아름답습니다."
   },
   {
     title: "신사이바시",
     image: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Shinsaibashi_Suji.jpg",
-    desc: "쇼핑과 맛집이 가득한 오사카의 대표 거리.",
+    desc: "쇼핑과 맛집이 가득한 오사카의 대표 거리입니다.",
     time: "관람 자유",
     fee: "무료",
-    tip: "오사카 기념품 쇼핑 명소."
+    tip: "오사카 기념품 쇼핑 명소입니다."
   },
   {
     title: "츠텐카쿠",
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Tsutenkaku_Tower_2015.jpg",
-    desc: "오사카의 상징적인 전망탑.",
+    desc: "오사카의 상징적인 전망탑입니다.",
     time: "약 30분~1시간 소요",
     fee: "입장료: 성인 900엔",
-    tip: "빌리켄 신사 방문도 추천."
+    tip: "빌리켄 신사 방문도 추천합니다."
   }
 ];
 
-let openedAttractionOsaka = null;
-let openedRowOsaka = null;
 
-function toggleAttractionDetailOsaka(idx) {
-  const detailRow1 = document.getElementById('osaka-attraction-detail-row-1');
-  const detailRow2 = document.getElementById('osaka-attraction-detail-row-2');
-  const isFirstRow = idx <= 2;
-  const detailRow = isFirstRow ? detailRow1 : detailRow2;
-
-  // 다른 행의 상세가 열려있으면 닫기
-  if (openedRowOsaka && ((isFirstRow && openedRowOsaka === 2) || (!isFirstRow && openedRowOsaka === 1))) {
-    if (openedRowOsaka === 1) {
-      detailRow1.style.display = "none";
-      detailRow1.innerHTML = "";
-    } else {
-      detailRow2.style.display = "none";
-      detailRow2.innerHTML = "";
-    }
-    openedAttractionOsaka = null;
-    openedRowOsaka = null;
-  }
-
-  // 이미 열려있는 경우 닫기
-  if (openedAttractionOsaka === idx) {
-    detailRow.style.display = "none";
-    detailRow.innerHTML = "";
-    openedAttractionOsaka = null;
-    openedRowOsaka = null;
-    return;
-  }
-
-  // 상세 정보 표시
-  const data = osakaAttractions[idx];
-  detailRow.innerHTML = `
-    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
-      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="flex:1;min-width:200px;">
-        <h3 style="margin-top:0;">${data.title}</h3>
-        <p style="margin:0 0 10px 0;">${data.desc}</p>
-        <ul style="padding-left:18px;margin:0 0 10px 0;">
-          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
-          <li><strong>입장료/비용:</strong> ${data.fee}</li>
-        </ul>
-        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
-      </div>
-    </div>
-  `;
-  detailRow.style.display = "block";
-  openedAttractionOsaka = idx;
-  openedRowOsaka = isFirstRow ? 1 : 2;
-}
-
-// 교토 명소 상세 데이터
 const kyotoAttractions = [
   {
     title: "기요미즈데라",
@@ -1427,59 +1322,6 @@ const kyotoAttractions = [
   }
 ];
 
-let openedAttractionKyoto = null;
-let openedRowKyoto = null;
-
-function toggleAttractionDetailKyoto(idx) {
-  const detailRow1 = document.getElementById('kyoto-attraction-detail-row-1');
-  const detailRow2 = document.getElementById('kyoto-attraction-detail-row-2');
-  const isFirstRow = idx <= 2;
-  const detailRow = isFirstRow ? detailRow1 : detailRow2;
-
-  // 다른 행의 상세가 열려있으면 닫기
-  if (openedRowKyoto && ((isFirstRow && openedRowKyoto === 2) || (!isFirstRow && openedRowKyoto === 1))) {
-    if (openedRowKyoto === 1) {
-      detailRow1.style.display = "none";
-      detailRow1.innerHTML = "";
-    } else {
-      detailRow2.style.display = "none";
-      detailRow2.innerHTML = "";
-    }
-    openedAttractionKyoto = null;
-    openedRowKyoto = null;
-  }
-
-  // 이미 열려있는 경우 닫기
-  if (openedAttractionKyoto === idx) {
-    detailRow.style.display = "none";
-    detailRow.innerHTML = "";
-    openedAttractionKyoto = null;
-    openedRowKyoto = null;
-    return;
-  }
-
-  // 상세 정보 표시
-  const data = kyotoAttractions[idx];
-  detailRow.innerHTML = `
-    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
-      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="flex:1;min-width:200px;">
-        <h3 style="margin-top:0;">${data.title}</h3>
-               <p style="margin:0 0 10px 0;">${data.desc}</p>
-        <ul style="padding-left:18px;margin:0 0 10px 0;">
-          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
-                   <li><strong>입장료/비용:</strong> ${data.fee}</li>
-        </ul>
-        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
-      </div>
-    </div>
-  `;
-  detailRow.style.display = "block";
-  openedAttractionKyoto = idx;
-  openedRowKyoto = isFirstRow ? 1 : 2;
-}
-
-// 삿포로 명소 상세 데이터
 const sapporoAttractions = [
   {
     title: "삿포로 시계탑",
@@ -1531,59 +1373,6 @@ const sapporoAttractions = [
   }
 ];
 
-let openedAttractionSapporo = null;
-let openedRowSapporo = null;
-
-function toggleAttractionDetailSapporo(idx) {
-  const detailRow1 = document.getElementById('sapporo-attraction-detail-row-1');
-  const detailRow2 = document.getElementById('sapporo-attraction-detail-row-2');
-  const isFirstRow = idx <= 2;
-  const detailRow = isFirstRow ? detailRow1 : detailRow2;
-
-  // 다른 행의 상세가 열려있으면 닫기
-  if (openedRowSapporo && ((isFirstRow && openedRowSapporo === 2) || (!isFirstRow && openedRowSapporo === 1))) {
-    if (openedRowSapporo === 1) {
-      detailRow1.style.display = "none";
-      detailRow1.innerHTML = "";
-    } else {
-      detailRow2.style.display = "none";
-      detailRow2.innerHTML = "";
-    }
-    openedAttractionSapporo = null;
-    openedRowSapporo = null;
-  }
-
-  // 이미 열려있는 경우 닫기
-  if (openedAttractionSapporo === idx) {
-    detailRow.style.display = "none";
-    detailRow.innerHTML = "";
-    openedAttractionSapporo = null;
-    openedRowSapporo = null;
-    return;
-  }
-
-  // 상세 정보 표시
-  const data = sapporoAttractions[idx];
-  detailRow.innerHTML = `
-    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
-      <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-      <div style="flex:1;min-width:200px;">
-        <h3 style="margin-top:0;">${data.title}</h3>
-        <p style="margin:0 0 10px 0;">${data.desc}</p>
-        <ul style="padding-left:18px;margin:0 0 10px 0;">
-          <li><strong>관람 소요 시간:</strong> ${data.time}</li>
-          <li><strong>입장료/비용:</strong> ${data.fee}</li>
-        </ul>
-        <div style="color:#888;font-size:0.97em;">Tip: ${data.tip}</div>
-      </div>
-    </div>
-  `;
-  detailRow.style.display = "block";
-  openedAttractionSapporo = idx;
-  openedRowSapporo = isFirstRow ? 1 : 2;
-}
-
-// 오키나와 명소 상세 데이터
 const okinawaAttractions = [
   {
     title: "에메랄드 해변",
@@ -1634,41 +1423,14 @@ const okinawaAttractions = [
     tip: "봄철 벚꽃과 함께 고성 산책을 즐겨보세요."
   }
 ];
+// ...기존 코드...
 
-let openedAttractionOkinawa = null;
-let openedRowOkinawa = null;
+let openedAttraction = null; // 현재 열린 상세 정보 인덱스
+let openedRow = null;        // 1 또는 2
 
-function toggleAttractionDetailOkinawa(idx) {
-  const detailRow1 = document.getElementById('okinawa-attraction-detail-row-1');
-  const detailRow2 = document.getElementById('okinawa-attraction-detail-row-2');
-  const isFirstRow = idx <= 2;
-  const detailRow = isFirstRow ? detailRow1 : detailRow2;
-
-  // 다른 행의 상세가 열려있으면 닫기
-  if (openedRowOkinawa && ((isFirstRow && openedRowOkinawa === 2) || (!isFirstRow && openedRowOkinawa === 1))) {
-    if (openedRowOkinawa === 1) {
-      detailRow1.style.display = "none";
-      detailRow1.innerHTML = "";
-    } else {
-      detailRow2.style.display = "none";
-      detailRow2.innerHTML = "";
-    }
-    openedAttractionOkinawa = null;
-    openedRowOkinawa = null;
-  }
-
-  // 이미 열려있는 경우 닫기
-  if (openedAttractionOkinawa === idx) {
-    detailRow.style.display = "none";
-    detailRow.innerHTML = "";
-    openedAttractionOkinawa = null;
-    openedRowOkinawa = null;
-    return;
-  }
-
-  // 상세 정보 표시
-  const data = okinawaAttractions[idx];
-  detailRow.innerHTML = `
+// 상세 정보 HTML 생성 함수 (공통)
+function createAttractionDetailHTML(data) {
+  return `
     <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap;">
       <img src="${data.image}" alt="${data.title}" style="width:220px;height:150px;object-fit:cover;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
       <div style="flex:1;min-width:200px;">
@@ -1682,10 +1444,118 @@ function toggleAttractionDetailOkinawa(idx) {
       </div>
     </div>
   `;
-  detailRow.style.display = "block";
-  openedAttractionOkinawa = idx;
-  openedRowOkinawa = isFirstRow ? 1 : 2;
 }
-</script>
+
+/**
+ * 공통 명소 상세 토글 함수
+ * @param {number} idx - 명소 인덱스
+ * @param {string} detailRow1Id - 1행 상세 div id
+ * @param {string} detailRow2Id - 2행 상세 div id
+ * @param {Array} dataArr - 명소 데이터 배열
+ * @param {object} state - {openedAttraction, openedRow}
+ */
+function toggleAttractionDetailCommon(idx, detailRow1Id, detailRow2Id, dataArr, state) {
+  const detailRow1 = document.getElementById(detailRow1Id);
+  const detailRow2 = document.getElementById(detailRow2Id);
+  const isFirstRow = idx <= 2;
+  const detailRow = isFirstRow ? detailRow1 : detailRow2;
+
+  // 동일 행에서 이미 열려있고, 같은 버튼을 다시 누르면 닫기
+  if (
+    ((state.openedRow === 1 && isFirstRow && state.openedAttraction === idx && detailRow1.style.display === "block") ||
+    (state.openedRow === 2 && !isFirstRow && state.openedAttraction === idx && detailRow2.style.display === "block"))
+  ) {
+    detailRow.style.display = "none";
+    detailRow.innerHTML = "";
+    state.openedAttraction = null;
+    state.openedRow = null;
+    return;
+  }
+
+  // 다른 행의 상세가 열려있으면 닫기
+  if (state.openedRow && ((isFirstRow && state.openedRow === 2) || (!isFirstRow && state.openedRow === 1))) {
+    if (state.openedRow === 1) {
+      detailRow1.style.display = "none";
+      detailRow1.innerHTML = "";
+    } else {
+      detailRow2.style.display = "none";
+      detailRow2.innerHTML = "";
+    }
+    state.openedAttraction = null;
+    state.openedRow = null;
+  }
+
+  // 상세 정보 표시
+  const data = dataArr[idx];
+  detailRow.innerHTML = createAttractionDetailHTML(data);
+  detailRow.style.display = "block";
+  state.openedAttraction = idx;
+  state.openedRow = isFirstRow ? 1 : 2;
+}
+
+// 상태 변수 객체로 변경
+const stateTokyo = { openedAttraction: null, openedRow: null };
+const stateOsaka = { openedAttraction: null, openedRow: null };
+const stateKyoto = { openedAttraction: null, openedRow: null };
+const stateSapporo = { openedAttraction: null, openedRow: null };
+const stateOkinawa = { openedAttraction: null, openedRow: null };
+
+// 도쿄
+function toggleAttractionDetail(idx) {
+  toggleAttractionDetailCommon(
+    idx,
+    'attraction-detail-row-1',
+    'attraction-detail-row-2',
+    tokyoAttractions,
+    stateTokyo
+  );
+}
+
+// 오사카
+function toggleAttractionDetailOsaka(idx) {
+  toggleAttractionDetailCommon(
+    idx,
+    'osaka-attraction-detail-row-1',
+    'osaka-attraction-detail-row-2',
+    osakaAttractions,
+    stateOsaka
+  );
+}
+
+// 교토
+function toggleAttractionDetailKyoto(idx) {
+  toggleAttractionDetailCommon(
+    idx,
+    'kyoto-attraction-detail-row-1',
+    'kyoto-attraction-detail-row-2',
+    kyotoAttractions,
+    stateKyoto
+  );
+}
+
+// 삿포로
+function toggleAttractionDetailSapporo(idx) {
+  toggleAttractionDetailCommon(
+    idx,
+    'sapporo-attraction-detail-row-1',
+    'sapporo-attraction-detail-row-2',
+    sapporoAttractions,
+    stateSapporo
+  );
+}
+
+// 오키나와
+function toggleAttractionDetailOkinawa(idx) {
+  toggleAttractionDetailCommon(
+    idx,
+    'okinawa-attraction-detail-row-1',
+    'okinawa-attraction-detail-row-2',
+    okinawaAttractions,
+    stateOkinawa
+  );
+}
+
+//
+  </script>
 </body>
 </html>
